@@ -1,4 +1,4 @@
-package com.jfg.gamermvvm.ui.theme
+package com.jfg.gamermvvm.presentation.ui.theme
 
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.material.MaterialTheme

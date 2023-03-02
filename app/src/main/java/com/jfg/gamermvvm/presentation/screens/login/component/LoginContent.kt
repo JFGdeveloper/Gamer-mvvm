@@ -1,4 +1,4 @@
-package com.jfg.gamermvvm.screens.login.component
+package com.jfg.gamermvvm.presentation.screens.login.component
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
@@ -8,21 +8,25 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material.icons.filled.Email
 import androidx.compose.material.icons.filled.Lock
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.jfg.gamermvvm.R
-import com.jfg.gamermvvm.screens.login.LoginScreen
-import com.jfg.gamermvvm.ui.theme.DarkGray500
-import com.jfg.gamermvvm.ui.theme.GamerMvvmTheme
-import com.jfg.gamermvvm.ui.theme.Red500
+import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
+import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
+import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
+import com.jfg.gamermvvm.presentation.ui.theme.DarkGray500
+import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
+import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 
 @Composable
@@ -65,6 +69,9 @@ fun BoxHeader() {
 @Composable
 fun CardForm() {
 
+    var email by remember { mutableStateOf("") }
+    var pass by remember { mutableStateOf("") }
+
     Card(modifier = Modifier.padding(top = 220.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
 
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
@@ -81,33 +88,32 @@ fun CardForm() {
                     fontSize = 12.sp
             )
             Spacer(modifier = Modifier.height(10.dp))
-            OutlinedTextField(
+
+            DefaultOutlineTextField(
                     modifier = Modifier.padding(vertical = 10.dp),
-                    value = "",
-                    onValueChange = {},
-                    placeholder = { Text(text = "Correo electronico") },
-                    leadingIcon = {
-                       Icon(imageVector = Icons.Default.ArrowForward , contentDescription = null)
-                    }
+                    value = email,
+                    onValueChange = {email = it},
+                    label = "Email",
+                    leadingIcon = Icons.Default.Email,
+                    keyBoard = KeyboardType.Email
             )
-            OutlinedTextField(
-                    modifier = Modifier.padding(vertical = 10.dp),
-                    value = "",
-                    onValueChange = {},
-                    placeholder = { Text(text = "Correo electronico") },
-                    leadingIcon = {
-                        Icon(imageVector = Icons.Default.Lock , contentDescription = null)
-                    }
+
+            DefaultOutlineTextField(
+                    value = pass,
+                    onValueChange = { pass = it},
+                    leadingIcon = Icons.Default.ArrowForward,
+                    hideText = true,
+                    label = "Password",
+                    keyBoard = KeyboardType.Password
             )
-            Button(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 40.dp),
-                    onClick = { /*TODO*/ }
+
+            DefaultButton(
+                    text = "Incicia sesión aqui",
+                    icon = Icons.Default.ArrowForward
             ) {
-                Icon(imageVector = Icons.Default.ArrowForward, contentDescription = null)
-                Text(modifier = Modifier.padding(start = 3.dp), text = "Incio de sesión")
+               // TODO
             }
+
 
         }
 

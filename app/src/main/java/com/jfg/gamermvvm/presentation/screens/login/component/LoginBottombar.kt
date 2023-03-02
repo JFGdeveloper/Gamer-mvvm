@@ -1,4 +1,4 @@
-package com.jfg.gamermvvm.screens.login.component
+package com.jfg.gamermvvm.presentation.screens.login.component
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*

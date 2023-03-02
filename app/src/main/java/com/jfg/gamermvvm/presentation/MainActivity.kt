@@ -1,4 +1,4 @@
-package com.jfg.gamermvvm
+package com.jfg.gamermvvm.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,8 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.jfg.gamermvvm.screens.login.LoginScreen
-import com.jfg.gamermvvm.ui.theme.GamerMvvmTheme
+import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
+import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
