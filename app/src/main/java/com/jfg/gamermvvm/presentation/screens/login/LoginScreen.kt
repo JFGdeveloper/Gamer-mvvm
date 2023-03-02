@@ -9,17 +9,20 @@ import androidx.compose.material.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.navigation.NavController
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.jfg.gamermvvm.presentation.screens.login.component.LoginBottomBar
 
 import com.jfg.gamermvvm.presentation.screens.login.component.LoginContent
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(controller: NavController) {
     Scaffold(
             topBar = {},
             content = { LoginContent(it) },
-            bottomBar = { LoginBottomBar() }
+            bottomBar = { LoginBottomBar(controller) }
     )
 }
 
@@ -33,7 +36,7 @@ fun DefaultPreview() {
                 modifier = Modifier.fillMaxSize(),
                 color = MaterialTheme.colors.background
         ) {
-            LoginScreen()
+            LoginScreen(rememberNavController())
         }
     }
 }

@@ -1,6 +1,7 @@
 package com.jfg.gamermvvm.presentation.screens.login.component
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
 import androidx.compose.material.Text
@@ -14,9 +15,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
+import com.jfg.gamermvvm.presentation.navigation.AppScreen
 
 @Composable
-fun LoginBottomBar() {
+fun LoginBottomBar(controller: NavController) {
 
     Row(
             modifier = Modifier
@@ -26,11 +30,14 @@ fun LoginBottomBar() {
     ){
         Text(text = "No tinenes cuenta? ", color = Color.Gray, fontSize = 14.sp)
         Spacer(modifier = Modifier.width(8.dp))
-        Text(
-                text = "Registrate aqui",
-                color = Color.Red,
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Bold
+        Text(   modifier = Modifier
+            .clickable {
+             controller.navigate(AppScreen.Signup.route)
+        },
+            text = "Registrate aqui",
+            color = Color.Red,
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
         )
 
     }
@@ -40,7 +47,8 @@ fun LoginBottomBar() {
 @Preview(showBackground = true)
 @Composable
 fun PreviewLoginBottomBar() {
-    LoginBottomBar()
+
+    LoginBottomBar(rememberNavController())
 }
 
 

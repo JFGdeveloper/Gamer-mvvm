@@ -15,6 +15,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.compose.rememberNavController
+import com.jfg.gamermvvm.presentation.navigation.Navigation
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 
@@ -24,11 +26,12 @@ class MainActivity : ComponentActivity() {
         setContent {
             GamerMvvmTheme(darkTheme = true) {
                 // A surface container using the 'background' color from the theme
+                val navHostController = rememberNavController()
                 Surface(
                         modifier = Modifier.fillMaxSize(),
                         color = MaterialTheme.colors.background
                 ) {
-                    LoginScreen()
+                    Navigation(controller = navHostController)
                 }
             }
         }
