@@ -70,8 +70,6 @@ fun BoxHeader() {
 @Composable
 fun CardForm(vm: LoginViewModel) {
 
-
-
     Card(modifier = Modifier.padding(top = 220.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
 
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
@@ -95,7 +93,9 @@ fun CardForm(vm: LoginViewModel) {
                     onValueChange = {vm.email.value = it},
                     label = "Email",
                     leadingIcon = Icons.Default.Email,
-                    keyBoard = KeyboardType.Email
+                    keyBoard = KeyboardType.Email,
+                    errorMsg = vm.errorEmail.value,
+                    onValidateText = {vm.validateEmail()}
             )
 
             DefaultOutlineTextField(
@@ -105,17 +105,21 @@ fun CardForm(vm: LoginViewModel) {
                     leadingIcon = Icons.Default.Lock,
                     hideText = true,
                     label = "Password",
-                    keyBoard = KeyboardType.Password
+                    keyBoard = KeyboardType.Password,
+                    errorMsg = vm.errorPass.value,
+                    onValidateText = {vm.validatePassword()}
             )
 
             DefaultButton(
                     text = "Incicia sesión aqui",
                     icon = Icons.Default.ArrowForward,
                     modifier = Modifier
-                        .padding(vertical = 40.dp)
-                        .fillMaxWidth()
+                        .padding(top = 40.dp)
+                        .fillMaxWidth(),
+                    enableButton = vm.enableButton
+
             ) {
-               // TODO
+
             }
 
 

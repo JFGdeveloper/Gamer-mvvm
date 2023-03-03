@@ -1,5 +1,6 @@
 package com.jfg.gamermvvm.presentation.screens.Composables
 
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.Icon
@@ -16,32 +17,50 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 
 @Composable
 fun DefaultOutlineTextField(
     modifier: Modifier = Modifier,
     value: String,
     onValueChange: (value: String)-> Unit,
+    onValidateText: ()-> Unit = {},
     placeHolder: String= "",
     label: String= "",
     leadingIcon: ImageVector?= null,
     hideText: Boolean= false,
     keyBoard: KeyboardType = KeyboardType.Text,
-    singleLine: Boolean = true
+    singleLine: Boolean = true,
+    errorMsg: String= ""
 ) {
-    OutlinedTextField(
-            modifier = modifier,
-            value = value,
-            onValueChange = { onValueChange(it)},
-            placeholder = { Text(text = placeHolder) },
-            label = { Text(text = label)},
-            leadingIcon = {
-                if (leadingIcon != null) {
-                    Icon(imageVector = leadingIcon, contentDescription = null)
-                }
-            },
-            visualTransformation = if (hideText) PasswordVisualTransformation() else VisualTransformation.None,
-            keyboardOptions = KeyboardOptions(keyboardType = keyBoard),
-            singleLine = singleLine
-    )
+    Column {
+
+        OutlinedTextField(
+                modifier = modifier,
+                value = value,
+                onValueChange = {
+                    onValueChange(it)
+                    onValidateText()
+                },
+                placeholder = { Text(text = placeHolder) },
+                label = { Text(text = label)},
+                leadingIcon = {
+                    if (leadingIcon != null) {
+                        Icon(imageVector = leadingIcon, contentDescription = null)
+                    }
+                },
+                visualTransformation = if (hideText) PasswordVisualTransformation() else VisualTransformation.None,
+                keyboardOptions = KeyboardOptions(keyboardType = keyBoard),
+                singleLine = singleLine
+        )
+
+        Text(
+                text = errorMsg,
+                modifier = Modifier.padding(top = 3.dp),
+                fontSize = 11.sp,
+                color = Color.Red
+        )
+
+
+    }
 }

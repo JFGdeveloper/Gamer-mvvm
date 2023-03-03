@@ -21,7 +21,7 @@ import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 fun LoginScreen(controller: NavController) {
     Scaffold(
             topBar = {},
-            content = { LoginContent(it,) },
+            content = { LoginContent(it) },
             bottomBar = { LoginBottomBar(controller) }
     )
 }
