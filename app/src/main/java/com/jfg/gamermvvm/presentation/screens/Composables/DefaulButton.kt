@@ -24,9 +24,7 @@ fun DefaultButton(
     onclick: ()->Unit
 ) {
     Button(
-            modifier = modifier
-                .fillMaxWidth()
-                .padding(vertical = 40.dp),
+            modifier = modifier,
             onClick = { onclick()},
             colors = ButtonDefaults.buttonColors(color)
     ) {

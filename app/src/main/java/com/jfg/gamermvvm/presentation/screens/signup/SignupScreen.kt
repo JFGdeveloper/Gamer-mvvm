@@ -4,13 +4,21 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.navigation.NavHostController
+import com.jfg.gamermvvm.presentation.screens.Composables.DefaultTopAppbar
+import com.jfg.gamermvvm.presentation.screens.signup.components.SignupContent
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun SignupScreen() {
+fun SignupScreen(controller: NavHostController) {
     Scaffold (
-            topBar = {},
-            content = { Text(text = "SignupScreen")},
-            bottomBar = {}
+            topBar = {
+                DefaultTopAppbar(title = "Nuevo usuario", controller = controller, backAvailable = true)
+            },
+            content = {
+                      SignupContent(paddingValues = it)
+            },
+            bottomBar = {},
+
     )
 }
