@@ -24,13 +24,14 @@ import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
+import com.jfg.gamermvvm.presentation.screens.login.LoginViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.DarkGray500
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 
 @Composable
-fun LoginContent(paddingValues: PaddingValues) {
+fun LoginContent(paddingValues: PaddingValues,vm: LoginViewModel = LoginViewModel()) {
     Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -39,7 +40,7 @@ fun LoginContent(paddingValues: PaddingValues) {
 
         BoxHeader()
 
-        CardForm()
+        CardForm(vm)
 
     }
 
@@ -67,10 +68,9 @@ fun BoxHeader() {
 
 
 @Composable
-fun CardForm() {
+fun CardForm(vm: LoginViewModel) {
 
-    var email by remember { mutableStateOf("") }
-    var pass by remember { mutableStateOf("") }
+
 
     Card(modifier = Modifier.padding(top = 220.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
 
@@ -91,8 +91,8 @@ fun CardForm() {
 
             DefaultOutlineTextField(
                     modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth(),
-                    value = email,
-                    onValueChange = {email = it},
+                    value = vm.email.value,
+                    onValueChange = {vm.email.value = it},
                     label = "Email",
                     leadingIcon = Icons.Default.Email,
                     keyBoard = KeyboardType.Email
@@ -100,8 +100,8 @@ fun CardForm() {
 
             DefaultOutlineTextField(
                     modifier= Modifier.fillMaxWidth(),
-                    value = pass,
-                    onValueChange = { pass = it},
+                    value = vm.pass.value,
+                    onValueChange = { vm.pass.value = it},
                     leadingIcon = Icons.Default.Lock,
                     hideText = true,
                     label = "Password",
@@ -128,19 +128,3 @@ fun CardForm() {
 }
 
 
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewContent() {
-    GamerMvvmTheme(darkTheme = true) {
-    // A surface container using the 'background' color from the theme
-    Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-    ) {
-        LoginContent(paddingValues = PaddingValues())
-
-    }
-}
-
-
-}

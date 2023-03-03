@@ -21,23 +21,8 @@ import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 fun LoginScreen(controller: NavController) {
     Scaffold(
             topBar = {},
-            content = { LoginContent(it) },
+            content = { LoginContent(it,) },
             bottomBar = { LoginBottomBar(controller) }
     )
-}
-
-
-@Preview(showBackground = true, showSystemUi = true,)
-@Composable
-fun DefaultPreview() {
-    GamerMvvmTheme(darkTheme = true) {
-        // A surface container using the 'background' color from the theme
-        Surface(
-                modifier = Modifier.fillMaxSize(),
-                color = MaterialTheme.colors.background
-        ) {
-            LoginScreen(rememberNavController())
-        }
-    }
 }
 

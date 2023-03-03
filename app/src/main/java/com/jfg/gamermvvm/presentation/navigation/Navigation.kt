@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
+import com.jfg.gamermvvm.presentation.screens.login.LoginViewModel
 import com.jfg.gamermvvm.presentation.screens.signup.SignupScreen
 
 @Composable

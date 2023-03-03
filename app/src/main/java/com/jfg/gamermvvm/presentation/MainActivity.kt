@@ -18,9 +18,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
 import com.jfg.gamermvvm.presentation.navigation.Navigation
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
+import com.jfg.gamermvvm.presentation.screens.login.LoginViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 
 class MainActivity : ComponentActivity() {
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
