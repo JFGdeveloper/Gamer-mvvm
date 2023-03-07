@@ -1,5 +1,6 @@
 package com.jfg.gamermvvm.presentation.screens.login.component
 
+import android.widget.Toast
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -14,6 +15,7 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -22,6 +24,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.jfg.gamermvvm.R
+import com.jfg.gamermvvm.domain.model.Response
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
@@ -74,6 +77,29 @@ fun BoxHeader() {
 @Composable
 fun CardForm(vm: LoginViewModel) {
 
+    // RECOLECTO EL ESTADO DEL LOGIN
+    val loginFlow = vm.loginFlow.collectAsState()
+    val context = LocalContext.current
+
+    loginFlow.value.let {
+        when(it){
+            Response.Loading -> {
+                Box(modifier = Modifier.fillMaxSize()){
+                    CircularProgressIndicator()
+                }
+            }
+            is Response.Success -> {
+                Toast.makeText(context,"Login success",Toast.LENGTH_SHORT).show()
+            }
+            is Response.Failure -> {
+                Toast.makeText(context,it.exception?.message ?: "Error al logearte",Toast.LENGTH_SHORT).show()
+            }
+            else ->{
+                Toast.makeText(context,"Error desconocido",Toast.LENGTH_SHORT).show()
+            }
+        }
+    }
+
     Card(modifier = Modifier.padding(top = 220.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
 
         Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
@@ -92,7 +118,9 @@ fun CardForm(vm: LoginViewModel) {
             Spacer(modifier = Modifier.height(10.dp))
 
             DefaultOutlineTextField(
-                    modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth(),
+                    modifier = Modifier
+                        .padding(vertical = 10.dp)
+                        .fillMaxWidth(),
                     value = vm.email.value,
                     onValueChange = {vm.email.value = it},
                     label = "Email",
@@ -124,6 +152,7 @@ fun CardForm(vm: LoginViewModel) {
 
             ) {
 
+                vm.onLogin()
             }
 
 
