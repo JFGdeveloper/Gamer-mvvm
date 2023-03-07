@@ -21,25 +21,126 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
+import com.jfg.gamermvvm.presentation.screens.signup.SignupViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.DarkGray500
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 
 @Composable
-fun SignupContent(paddingValues: PaddingValues) {
+fun SignupContent(paddingValues: PaddingValues,vm: SignupViewModel = hiltViewModel()) {
     Box(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues),
     ) {
 
-        BoxHeaderSignup()
+        // BOX DEL BACKGROUND
+        Box(modifier = Modifier
+            .fillMaxWidth()
+            .height(230.dp)
+            .background(Red500),
+            contentAlignment = Alignment.TopCenter
+        ){
+            Column(modifier = Modifier.padding(top = 20.dp)) {
+                Image(
+                        modifier = Modifier.height(100.dp),
+                        painter = painterResource(id = R.drawable.user),
+                        contentDescription = "control de xbox image"
+                )
+            }
 
-        CardFormSignup()
+        }
+
+        // FORMULARIO
+        Card(modifier = Modifier.padding(top = 130.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
+
+            Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
+
+                Text(
+                        modifier = Modifier.padding(top = 25.dp, bottom = 10.dp),
+                        text = "Registro",
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
+                )
+                Text(
+                        text = "Por favor rellena estos datos para continuar",
+                        color = Color.Gray,
+                        fontSize = 12.sp
+                )
+                Spacer(modifier = Modifier.height(8.dp))
+
+                DefaultOutlineTextField(
+                        modifier = Modifier
+                            .padding(vertical = 3.dp)
+                            .fillMaxWidth(),
+                        value = vm.username.value,
+                        onValueChange = {vm.username.value = it},
+                        label = "Nombre de usuario",
+                        leadingIcon = Icons.Default.Person,
+                        keyBoard = KeyboardType.Text,
+                        errorMsg = vm.errorUsername.value,
+                        onValidateText = {vm.onValidateUsername()}
+                )
+
+                DefaultOutlineTextField(
+                        modifier = Modifier
+                            .padding(vertical = 3.dp)
+                            .fillMaxWidth(),
+                        value = vm.email.value,
+                        onValueChange = {vm.email.value = it},
+                        label = "Email",
+                        leadingIcon = Icons.Default.Email,
+                        keyBoard = KeyboardType.Email,
+                        errorMsg = vm.errorEmail.value,
+                        onValidateText = {vm.validateEmail()}
+                )
+
+                DefaultOutlineTextField(
+                        modifier = Modifier
+                            .padding(vertical = 3.dp)
+                            .fillMaxWidth(),
+                        value = vm.pass.value,
+                        onValueChange = {vm.pass.value = it},
+                        label = "Password",
+                        leadingIcon = Icons.Default.Lock,
+                        keyBoard = KeyboardType.Password,
+                        errorMsg = vm.errorPass.value,
+                        onValidateText = { vm.validatePassword()}
+                )
+
+                DefaultOutlineTextField(
+                        modifier = Modifier.fillMaxWidth(),
+                        value = vm.confirmPass.value,
+                        onValueChange = { vm.confirmPass.value = it},
+                        leadingIcon = Icons.Outlined.Lock,
+                        hideText = true,
+                        label = "Confirmar Password",
+                        keyBoard = KeyboardType.Password,
+                        errorMsg = vm.errorConfirmPass.value,
+                        onValidateText = {vm.onValidateConfirmPassWord()}
+                )
+
+                DefaultButton(
+                        text = "Incicia sesión",
+                        icon = Icons.Default.ArrowForward,
+                        modifier = Modifier
+                            .padding(top = 8.dp, bottom = 5.dp)
+                            .fillMaxWidth(),
+                        enableButton = vm.enableButton
+                ) {
+                    // TODO
+                }
+
+
+            }
+
+
+        }
 
     }
 
@@ -47,21 +148,7 @@ fun SignupContent(paddingValues: PaddingValues) {
 
 @Composable
 fun BoxHeaderSignup() {
-    Box(modifier = Modifier
-        .fillMaxWidth()
-        .height(250.dp)
-        .background(Red500),
-        contentAlignment = Alignment.TopCenter
-    ){
-        Column(modifier = Modifier.padding(top = 20.dp)) {
-            Image(
-                    modifier = Modifier.height(100.dp),
-                    painter = painterResource(id = R.drawable.user),
-                    contentDescription = "control de xbox image"
-            )
-        }
 
-    }
 }
 
 
@@ -73,93 +160,7 @@ fun CardFormSignup() {
     var pass by remember { mutableStateOf("") }
     var confirmPass by remember { mutableStateOf("") }
 
-    Card(modifier = Modifier.padding(top = 150.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
-
-        Column(modifier = Modifier.padding(horizontal = 12.dp, vertical = 8.dp)) {
-
-            Text(
-                    modifier = Modifier.padding(top = 25.dp, bottom = 10.dp),
-                    text = "Registro",
-                    fontSize = 18.sp,
-                    fontWeight = FontWeight.Bold
-            )
-            Text(
-                    text = "Por favor rellena estos datos para continuar",
-                    color = Color.Gray,
-                    fontSize = 12.sp
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-
-            DefaultOutlineTextField(
-                    modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth(),
-                    value = name,
-                    onValueChange = {name = it},
-                    label = "Nombre de usuario",
-                    leadingIcon = Icons.Default.Person,
-                    keyBoard = KeyboardType.Text
-            )
-
-            DefaultOutlineTextField(
-                    modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth(),
-                    value = email,
-                    onValueChange = {email = it},
-                    label = "Email",
-                    leadingIcon = Icons.Default.Email,
-                    keyBoard = KeyboardType.Email
-            )
-
-            DefaultOutlineTextField(
-                    modifier = Modifier.padding(vertical = 10.dp).fillMaxWidth(),
-                    value = pass,
-                    onValueChange = {pass = it},
-                    label = "Password",
-                    leadingIcon = Icons.Default.Lock,
-                    keyBoard = KeyboardType.Password
-            )
-
-            DefaultOutlineTextField(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = confirmPass,
-                    onValueChange = { confirmPass = it},
-                    leadingIcon = Icons.Outlined.Lock,
-                    hideText = true,
-                    label = "Confirmar Password",
-                    keyBoard = KeyboardType.Password
-            )
-
-            DefaultButton(
-                    text = "Incicia sesión",
-                    icon = Icons.Default.ArrowForward,
-                    modifier = Modifier
-                        .padding(vertical = 10.dp)
-                        .fillMaxWidth()
-            ) {
-               // TODO
-            }
-
-
-        }
-
-
-    }
 
 
 }
 
-
-@Preview(showBackground = true, showSystemUi = true)
-@Composable
-fun PreviewContent() {
-    GamerMvvmTheme(darkTheme = true) {
-    // A surface container using the 'background' color from the theme
-    Surface(
-            modifier = Modifier.fillMaxSize(),
-            color = MaterialTheme.colors.background
-    ) {
-        SignupContent(paddingValues = PaddingValues())
-
-    }
-}
-
-
-}

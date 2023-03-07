@@ -20,7 +20,11 @@ import com.jfg.gamermvvm.presentation.navigation.Navigation
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
 import com.jfg.gamermvvm.presentation.screens.login.LoginViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
+import dagger.hilt.EntryPoint
+import dagger.hilt.android.AndroidEntryPoint
 
+
+@AndroidEntryPoint
 class MainActivity : ComponentActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -20,6 +20,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
@@ -30,8 +31,11 @@ import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 
+
+// EN ESTA PANTALLA EL CODIGO SE DIVIDE EN COMPONENTES PARA TENER UN CONTENT MAS LIMPIO
+// PERO SE PUEDE METER EL CODIGO SIN CREAR COMPONENTES COMO EN LA PANTALLA DE SIGNUPSCREEN
 @Composable
-fun LoginContent(paddingValues: PaddingValues,vm: LoginViewModel = LoginViewModel()) {
+fun LoginContent(paddingValues: PaddingValues,vm: LoginViewModel = hiltViewModel()) {
     Box(
             modifier = Modifier
                 .fillMaxWidth()
