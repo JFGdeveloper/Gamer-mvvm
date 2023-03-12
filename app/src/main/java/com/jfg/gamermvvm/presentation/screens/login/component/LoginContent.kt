@@ -23,8 +23,10 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.domain.model.Response
+import com.jfg.gamermvvm.presentation.navigation.AppScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
@@ -38,7 +40,7 @@ import com.jfg.gamermvvm.presentation.ui.theme.Red500
 // EN ESTA PANTALLA EL CODIGO SE DIVIDE EN COMPONENTES PARA TENER UN CONTENT MAS LIMPIO
 // PERO SE PUEDE METER EL CODIGO SIN CREAR COMPONENTES COMO EN LA PANTALLA DE SIGNUPSCREEN
 @Composable
-fun LoginContent(paddingValues: PaddingValues,vm: LoginViewModel = hiltViewModel()) {
+fun LoginContent(controller: NavHostController,paddingValues: PaddingValues,vm: LoginViewModel = hiltViewModel()) {
     Box(
             modifier = Modifier
                 .fillMaxWidth()
@@ -47,7 +49,7 @@ fun LoginContent(paddingValues: PaddingValues,vm: LoginViewModel = hiltViewModel
 
         BoxHeader()
 
-        CardForm(vm)
+        CardForm(controller = controller,vm)
 
     }
 
@@ -75,7 +77,7 @@ fun BoxHeader() {
 
 
 @Composable
-fun CardForm(vm: LoginViewModel) {
+fun CardForm(controller: NavHostController,vm: LoginViewModel) {
 
     // RECOLECTO EL ESTADO DEL LOGIN
     val loginFlow = vm.loginFlow.collectAsState()
@@ -89,13 +91,17 @@ fun CardForm(vm: LoginViewModel) {
                 }
             }
             is Response.Success -> {
-                Toast.makeText(context,"Login success",Toast.LENGTH_SHORT).show()
+               LaunchedEffect(Unit){
+                   controller.navigate(AppScreen.Profile.route){
+                       popUpTo(AppScreen.Login.route){inclusive = true}
+                   }
+               }
             }
             is Response.Failure -> {
                 Toast.makeText(context,it.exception?.message ?: "Error al logearte",Toast.LENGTH_SHORT).show()
             }
             else ->{
-                Toast.makeText(context,"Error desconocido",Toast.LENGTH_SHORT).show()
+
             }
         }
     }

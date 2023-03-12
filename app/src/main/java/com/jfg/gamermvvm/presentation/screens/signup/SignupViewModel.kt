@@ -3,11 +3,21 @@ package com.jfg.gamermvvm.presentation.screens.signup
 import android.util.Patterns
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.google.firebase.auth.FirebaseUser
+import com.jfg.gamermvvm.domain.model.Response
+import com.jfg.gamermvvm.domain.model.User
+import com.jfg.gamermvvm.domain.use_cases.auth.AuthUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class SignupViewModel @Inject constructor(): ViewModel(){
+class SignupViewModel @Inject constructor(
+    private val authUseCases: AuthUseCases
+): ViewModel(){
 
 
     // USERNAME
@@ -32,6 +42,25 @@ class SignupViewModel @Inject constructor(): ViewModel(){
 
     //BUTTON
     var enableButton = false
+
+    private val _signupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
+    val signupFlow: StateFlow<Response<FirebaseUser>?> get() =  _signupFlow
+
+    fun onSignup(){
+        var user = User(
+                username = username.value,
+                email = email.value,
+                password = pass.value
+        )
+
+        signup(user)
+    }
+
+    private fun signup(user: User) = viewModelScope.launch{
+        _signupFlow.value = Response.Loading
+        val result = authUseCases.signup(user)
+        _signupFlow.value = result
+    }
 
 
     fun onValidateUsername(){

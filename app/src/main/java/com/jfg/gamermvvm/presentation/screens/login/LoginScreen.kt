@@ -18,10 +18,10 @@ import com.jfg.gamermvvm.presentation.screens.login.component.LoginContent
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 
 @Composable
-fun LoginScreen(controller: NavController) {
+fun LoginScreen(controller: NavHostController) {
     Scaffold(
             topBar = {},
-            content = { LoginContent(it) },
+            content = { LoginContent(controller = controller,it) },
             bottomBar = { LoginBottomBar(controller) }
     )
 }

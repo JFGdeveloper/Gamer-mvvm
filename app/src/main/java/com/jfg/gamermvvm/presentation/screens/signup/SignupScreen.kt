@@ -2,8 +2,8 @@ package com.jfg.gamermvvm.presentation.screens.signup
 
 import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
-import androidx.compose.material.Text
 import androidx.compose.runtime.Composable
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultTopAppbar
 import com.jfg.gamermvvm.presentation.screens.signup.components.SignupContent
@@ -16,7 +16,7 @@ fun SignupScreen(controller: NavHostController) {
                 DefaultTopAppbar(title = "Nuevo usuario", controller = controller, backAvailable = true)
             },
             content = {
-                      SignupContent(paddingValues = it)
+                      SignupContent(paddingValues = it,controller = controller)
             },
             bottomBar = {},
 

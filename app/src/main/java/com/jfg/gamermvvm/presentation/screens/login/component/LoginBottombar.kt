@@ -32,7 +32,9 @@ fun LoginBottomBar(controller: NavController) {
         Spacer(modifier = Modifier.width(8.dp))
         Text(   modifier = Modifier
             .clickable {
-             controller.navigate(AppScreen.Signup.route)
+             controller.navigate(AppScreen.Signup.route){
+                 controller.popBackStack()
+             }
         },
             text = "Registrate aqui",
             color = Color.Red,
