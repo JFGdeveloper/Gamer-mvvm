@@ -11,4 +11,6 @@ interface AuthRepository {
     suspend fun login(email: String, pass: String): Response<FirebaseUser>
     suspend fun signup(user: User): Response<FirebaseUser>
     fun logout()
+
+
 }

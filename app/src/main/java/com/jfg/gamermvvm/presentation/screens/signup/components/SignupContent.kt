@@ -42,30 +42,6 @@ fun SignupContent(
 ) {
     val signupFlow = vm.signupFlow.collectAsState()
 
-    signupFlow.value.let {
-        when(it){
-            Response.Loading ->{
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    CircularProgressIndicator()
-                }
-            }
-            is Response.Success ->{
-                LaunchedEffect(Unit){
-                    controller.navigate(AppScreen.Profile.route){
-                        //launchSingleTop = true
-                        popUpTo(AppScreen.Signup.route){
-                            inclusive = true
-                        }
-                    }
-                }
-            }
-            is Response.Failure ->{
-                Toast.makeText(LocalContext.current, it.exception?.message ?: "Error desconocido", Toast.LENGTH_LONG).show()
-            }
-            else -> {}
-
-        }
-    }
 
     Box(
             modifier = Modifier
@@ -178,23 +154,34 @@ fun SignupContent(
 
     }
 
+
+    signupFlow.value.let {
+        when(it){
+            Response.Loading ->{
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+                    CircularProgressIndicator()
+                }
+            }
+            is Response.Success ->{
+                LaunchedEffect(Unit){
+                    vm.createUser()
+                    controller.navigate(AppScreen.Profile.route){
+                        popUpTo(AppScreen.Signup.route){
+                            inclusive = true
+                        }
+                    }
+                }
+            }
+            is Response.Failure ->{
+                Toast.makeText(LocalContext.current, it.exception?.message ?: "Error desconocido", Toast.LENGTH_LONG).show()
+            }
+            else -> {}
+
+        }
+    }
+
+
 }
 
-@Composable
-fun BoxHeaderSignup() {
 
-}
-
-
-@Composable
-fun CardFormSignup() {
-
-    var name by remember { mutableStateOf("") }
-    var email by remember { mutableStateOf("") }
-    var pass by remember { mutableStateOf("") }
-    var confirmPass by remember { mutableStateOf("") }
-
-
-
-}
 

@@ -8,6 +8,7 @@ import com.google.firebase.auth.FirebaseUser
 import com.jfg.gamermvvm.domain.model.Response
 import com.jfg.gamermvvm.domain.model.User
 import com.jfg.gamermvvm.domain.use_cases.auth.AuthUseCases
+import com.jfg.gamermvvm.domain.use_cases.user.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -16,7 +17,8 @@ import javax.inject.Inject
 
 @HiltViewModel
 class SignupViewModel @Inject constructor(
-    private val authUseCases: AuthUseCases
+    private val authUseCases: AuthUseCases,
+    private val userUseCases: UserUseCases
 ): ViewModel(){
 
 
@@ -46,15 +48,23 @@ class SignupViewModel @Inject constructor(
     private val _signupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
     val signupFlow: StateFlow<Response<FirebaseUser>?> get() =  _signupFlow
 
-    fun onSignup(){
-        var user = User(
-                username = username.value,
-                email = email.value,
-                password = pass.value
-        )
+    var user = User()
 
+
+    fun onSignup(){
+        user.username = username.value
+        user.email = email.value
+        user.password = pass.value
         signup(user)
     }
+
+    // ME ASEGURO DE LLAMARLO CUANDO SE QUE LA RESPUESTA ES SUCCESS
+    fun createUser() = viewModelScope.launch {
+        user.id = authUseCases.getUser()!!.uid
+        userUseCases.create(user)
+    }
+
+
 
     private fun signup(user: User) = viewModelScope.launch{
         _signupFlow.value = Response.Loading

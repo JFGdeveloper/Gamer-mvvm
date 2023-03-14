@@ -13,6 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.navigation.AppScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
+import com.jfg.gamermvvm.presentation.screens.profile.components.ProfileContent
 
 @Composable
 fun ProfileScreen(controller: NavHostController,viewModel: ProfileViewModel = hiltViewModel()) {
@@ -20,21 +21,7 @@ fun ProfileScreen(controller: NavHostController,viewModel: ProfileViewModel = hi
     Scaffold(
             topBar = {},
             content = {
-                Column(modifier = Modifier.fillMaxSize()) {
-                    Text(text = "PERFIL USUARIO")
-
-                    DefaultButton(
-                            modifier = Modifier.padding(it),
-                            text = "Ir a login",
-                            icon = Icons.Default.ArrowForward
-                    ) {
-                        viewModel.onLogout()
-                        controller.navigate(AppScreen.Login.route){
-                            popUpTo(AppScreen.Profile.route){ inclusive = true}
-                        }
-                    }
-                }
-
+                ProfileContent(modifier = Modifier.padding(it), controller = controller, vm = viewModel)
             },
             bottomBar = {}
     )
