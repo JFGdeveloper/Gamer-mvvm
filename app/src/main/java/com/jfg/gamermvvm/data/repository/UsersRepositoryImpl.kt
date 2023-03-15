@@ -5,6 +5,9 @@ import com.jfg.gamermvvm.domain.model.Response
 import com.jfg.gamermvvm.domain.model.User
 import com.jfg.gamermvvm.domain.repository.AuthRepository
 import com.jfg.gamermvvm.domain.repository.UsersRepository
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
 
@@ -21,6 +24,23 @@ class UsersRepositoryImpl @Inject constructor(
             e.printStackTrace()
             Response.Failure(e)
         }
+    }
+
+    override fun getUserById(id: String): Flow<User> = callbackFlow{
+        // pongo escuchador al document
+        val snapshotListener = userRef.document(id).addSnapshotListener{ snapshot, e ->
+            val user = snapshot?.toObject(User::class.java) ?: User()
+
+            // emito resultado
+            trySend(user)
+
+        }
+
+        // cierro los cotis
+        awaitClose {
+            snapshotListener.remove()
+        }
+
     }
 
 

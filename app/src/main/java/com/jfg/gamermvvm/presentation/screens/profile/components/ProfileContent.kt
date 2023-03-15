@@ -60,21 +60,23 @@ fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,
 
         Spacer(modifier = Modifier.height(70.dp))
         Text(
-                text = "Nombre del usuario",
+                text = vm.userData.username,
                 fontSize = 20.sp,
                 fontWeight = FontWeight.Bold,
                 color = Color.White
         )
         Spacer(modifier = Modifier.height(8.dp))
         Text(
-                text = "emai @ usuario.com",
+                text = vm.userData.email,
                 color = Color.White,
                 fontStyle = FontStyle.Italic
         )
         Spacer(modifier = Modifier.height(12.dp))
 
-        DefaultButton(text = "Editar datos", icon = Icons.Default.Edit) {
-
+        DefaultButton(text = "Editar datos", icon = Icons.Default.Edit, color = Color.White) {
+            controller.navigate(AppScreen.ProfileEdit.route){
+                popUpTo(AppScreen.ProfileEdit.route){inclusive = true}
+            }
         }
         DefaultButton(text = "Cerrar sesion", icon = Icons.Default.Close) {
             vm.onLogout()

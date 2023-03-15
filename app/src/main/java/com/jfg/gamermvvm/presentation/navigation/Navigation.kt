@@ -6,6 +6,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
 import com.jfg.gamermvvm.presentation.screens.profile.ProfileScreen
+import com.jfg.gamermvvm.presentation.screens.profile_edit.ProfileEditScreen
 import com.jfg.gamermvvm.presentation.screens.signup.SignupScreen
 
 @Composable
@@ -23,6 +24,10 @@ fun Navigation(controller: NavHostController) {
 
         composable(AppScreen.Profile.route){
             ProfileScreen(controller)
+        }
+
+        composable(AppScreen.ProfileEdit.route){
+            ProfileEditScreen(controller)
         }
     }
 

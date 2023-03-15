@@ -1,7 +1,9 @@
 package com.jfg.gamermvvm.presentation.screens.signup
 
 import android.util.Patterns
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -10,8 +12,6 @@ import com.jfg.gamermvvm.domain.model.User
 import com.jfg.gamermvvm.domain.use_cases.auth.AuthUseCases
 import com.jfg.gamermvvm.domain.use_cases.user.UserUseCases
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -21,40 +21,59 @@ class SignupViewModel @Inject constructor(
     private val userUseCases: UserUseCases
 ): ViewModel(){
 
+    var state by mutableStateOf(SignupState())
+        private set
 
     // USERNAME
-    var username = mutableStateOf("")
-    var isUsernameValid = mutableStateOf(false)
-    var errorUsername = mutableStateOf("")
+    var isUsernameValid by mutableStateOf(false)
+    private set
+    var errorUsername by mutableStateOf("")
+    private set
 
     //EMAIL
-    var email = mutableStateOf("")
-    var isEmailValid = mutableStateOf(false)
-    var errorEmail = mutableStateOf("")
+    var isEmailValid by mutableStateOf(false)
+    private set
+    var errorEmail by mutableStateOf("")
+    private set
 
     //PASS
-    var pass = mutableStateOf("")
-    var isPassValid = mutableStateOf(false)
-    var errorPass = mutableStateOf("")
+    var isPassValid by mutableStateOf(false)
+    private set
+    var errorPass by mutableStateOf("")
+    private set
 
     //CONFIRMPASS
-    var confirmPass = mutableStateOf("")
-    var isConfirmPassValid = mutableStateOf(false)
-    var errorConfirmPass = mutableStateOf("")
+    var isConfirmPassValid by mutableStateOf(false)
+    private set
+    var errorConfirmPass by mutableStateOf("")
+    private set
 
     //BUTTON
     var enableButton = false
 
-    private val _signupFlow = MutableStateFlow<Response<FirebaseUser>?>(null)
-    val signupFlow: StateFlow<Response<FirebaseUser>?> get() =  _signupFlow
+    var response by mutableStateOf<Response<FirebaseUser>?>(null)
+    private set
 
     var user = User()
 
+    fun onUsernameInput(username: String){
+        state = state.copy(username = username)
+    }
+    fun onEmailInput(email: String){
+        state = state.copy(email = email)
+    }
+    fun onPasswordInput(pass: String){
+        state = state.copy(password = pass)
+    }
+    fun oncConfirmPassInput(confirmPass: String){
+        state = state.copy(confirmPass = confirmPass)
+    }
+
 
     fun onSignup(){
-        user.username = username.value
-        user.email = email.value
-        user.password = pass.value
+        user.username = state.username
+        user.email = state.email
+        user.password = state.password
         signup(user)
     }
 
@@ -67,20 +86,20 @@ class SignupViewModel @Inject constructor(
 
 
     private fun signup(user: User) = viewModelScope.launch{
-        _signupFlow.value = Response.Loading
+        response = Response.Loading
         val result = authUseCases.signup(user)
-        _signupFlow.value = result
+        response = result
     }
 
 
     fun onValidateUsername(){
-        if (username.value.length >= 6){
-            isUsernameValid.value = true
-            errorUsername.value = ""
+        if (state.username.length >= 6){
+            isUsernameValid = true
+            errorUsername = ""
 
         }else{
-            isUsernameValid.value = false
-            errorUsername.value = "Minimo 6 caracteres"
+            isUsernameValid = false
+            errorUsername = "Minimo 6 caracteres"
         }
 
         enableButton()
@@ -88,14 +107,14 @@ class SignupViewModel @Inject constructor(
 
 
     fun onValidateConfirmPassWord(){
-        if (pass.value == confirmPass.value){
-            isConfirmPassValid.value = true
-            errorConfirmPass.value = ""
+        if (state.password == state.confirmPass){
+            isConfirmPassValid = true
+            errorConfirmPass = ""
 
         }else{
 
-            isConfirmPassValid.value = false
-            errorConfirmPass.value = "La contaseña no coincide"
+            isConfirmPassValid = false
+            errorConfirmPass = "La contaseña no coincide"
         }
 
         enableButton()
@@ -103,24 +122,24 @@ class SignupViewModel @Inject constructor(
 
 
     fun validateEmail(){
-        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
-            isEmailValid.value = true
-            errorEmail.value = ""
+        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()){
+            isEmailValid = true
+            errorEmail = ""
         }else{
-            isEmailValid.value = false
-            errorEmail.value = "Email no valido"
+            isEmailValid = false
+            errorEmail = "Email no valido"
         }
 
         enableButton()
     }
 
     fun validatePassword(){
-        if (pass.value.length >= 6){
-            isPassValid.value = true
-            errorPass.value = ""
+        if (state.password.length >= 6){
+            isPassValid = true
+            errorPass = ""
         }else{
-            isPassValid.value = false
-            errorPass.value = "Minino 6 caracteres"
+            isPassValid = false
+            errorPass = "Minino 6 caracteres"
         }
 
         enableButton()
@@ -128,9 +147,9 @@ class SignupViewModel @Inject constructor(
 
     private fun enableButton(){
         enableButton =
-            isUsernameValid.value &&
-            isEmailValid.value &&
-            isPassValid.value &&
-            isConfirmPassValid.value
+            isUsernameValid &&
+            isEmailValid &&
+            isPassValid &&
+            isConfirmPassValid
     }
 }

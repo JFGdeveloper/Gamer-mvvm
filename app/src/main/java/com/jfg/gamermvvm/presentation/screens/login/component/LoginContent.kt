@@ -80,8 +80,7 @@ fun BoxHeader() {
 fun CardForm(controller: NavHostController,vm: LoginViewModel) {
 
     // RECOLECTO EL ESTADO DEL LOGIN
-    val loginFlow = vm.loginFlow.collectAsState()
-    val context = LocalContext.current
+    val state = vm.state
 
     Card(modifier = Modifier.padding(top = 220.dp, start = 40.dp, end = 40.dp), backgroundColor = DarkGray500, shape = RoundedCornerShape(8.dp)) {
 
@@ -104,24 +103,24 @@ fun CardForm(controller: NavHostController,vm: LoginViewModel) {
                     modifier = Modifier
                         .padding(vertical = 10.dp)
                         .fillMaxWidth(),
-                    value = vm.email.value,
-                    onValueChange = {vm.email.value = it},
+                    value = state.email,
+                    onValueChange = {vm.onEmailInput(it)},
                     label = "Email",
                     leadingIcon = Icons.Default.Email,
                     keyBoard = KeyboardType.Email,
-                    errorMsg = vm.errorEmail.value,
+                    errorMsg = vm.errorEmail,
                     onValidateText = {vm.validateEmail()}
             )
 
             DefaultOutlineTextField(
                     modifier= Modifier.fillMaxWidth(),
-                    value = vm.pass.value,
-                    onValueChange = { vm.pass.value = it},
+                    value = state.password,
+                    onValueChange = { vm.onPassWordInput(it)},
                     leadingIcon = Icons.Default.Lock,
                     hideText = true,
                     label = "Password",
                     keyBoard = KeyboardType.Password,
-                    errorMsg = vm.errorPass.value,
+                    errorMsg = vm.errorPass,
                     onValidateText = {vm.validatePassword()}
             )
 
@@ -143,39 +142,6 @@ fun CardForm(controller: NavHostController,vm: LoginViewModel) {
 
 
     }
-
-    loginFlow.value.let {
-        when(it){
-            Response.Loading -> {
-                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-                    CircularProgressIndicator()
-                }
-            }
-            is Response.Success -> {
-                LaunchedEffect(Unit){
-                    controller.navigate(AppScreen.Profile.route){
-                        popUpTo(AppScreen.Login.route){
-                            inclusive = true
-                        }
-                    }
-                }
-            }
-            is Response.Failure -> {
-                Toast.makeText(context,it.exception?.message ?: "Error al logearte",Toast.LENGTH_SHORT).show()
-            }
-
-            else -> { Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter){
-                Text(text = "Respuesta es null")
-                Spacer(modifier = Modifier.height(50.dp))
-                CircularProgressIndicator()
-            }
-
-            }
-
-        }
-    }
-
-
 
 }
 

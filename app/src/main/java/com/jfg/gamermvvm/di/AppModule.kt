@@ -12,6 +12,7 @@ import com.jfg.gamermvvm.domain.repository.AuthRepository
 import com.jfg.gamermvvm.domain.repository.UsersRepository
 import com.jfg.gamermvvm.domain.use_cases.auth.*
 import com.jfg.gamermvvm.domain.use_cases.user.Create
+import com.jfg.gamermvvm.domain.use_cases.user.GetUserById
 import com.jfg.gamermvvm.domain.use_cases.user.UserUseCases
 import dagger.Module
 import dagger.Provides
@@ -49,6 +50,7 @@ object AppModule {
 
     @Provides
     fun providerUserUseCases(repository: UsersRepository) = UserUseCases(
-            create = Create(repository)
+            create = Create(repository),
+            getUserById = GetUserById(repository)
     )
 }

@@ -1,7 +1,10 @@
 package com.jfg.gamermvvm.presentation.screens.login
 
+import android.util.Log
 import android.util.Patterns
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.FirebaseUser
@@ -18,63 +21,83 @@ import javax.inject.Inject
 class LoginViewModel @Inject constructor(
     private val authUseCases: AuthUseCases
 ): ViewModel() {
+
+    //ESTADO DE LOS VALORES EN LOGIN
+    var state by mutableStateOf(LoginState())
+        private set
+
+
     //EMAIL
-    var email = mutableStateOf("")
-    var isEmailValid = mutableStateOf(false)
-    var errorEmail = mutableStateOf("")
+    var isEmailValid by mutableStateOf(false)
+    var errorEmail by mutableStateOf("")
 
     //PASS
-    var pass = mutableStateOf("")
-    var isPassValid = mutableStateOf(false)
-    var errorPass = mutableStateOf("")
+    var isPassValid by mutableStateOf(false)
+    var errorPass by mutableStateOf("")
 
     //BUTTON
     var enableButton = false
 
+/*  ALTERNATIVA AL DELEGADO
     private val _loginFlow= MutableStateFlow<Response<FirebaseUser>?>(null)
     val loginFlow: StateFlow<Response<FirebaseUser>?> get() = _loginFlow
+ */
+
+    var loginResponse by mutableStateOf<Response<FirebaseUser>?>(null)
+     private set
 
     // USER DE FIREBASE
     private var user: FirebaseUser? = authUseCases.getUser()
 
     init {
         if (user != null){
-            _loginFlow.value = Response.Success(user!!)
+            loginResponse = Response.Success(user!!)
         }
+
+    }
+
+
+
+    fun onEmailInput(email: String){
+        state = state.copy(email = email)
+    }
+
+    fun onPassWordInput(pass: String){
+        state = state.copy(password = pass)
     }
 
     fun onLogin() = viewModelScope.launch {
-        _loginFlow.value = Response.Loading
-       val result = authUseCases.login.invoke(email = email.value, password = pass.value)
-        _loginFlow.value = result
+        loginResponse = Response.Loading
+       val result = authUseCases.login.invoke(email = state.email, password = state.password)
+        loginResponse = result
     }
 
 
     fun validateEmail(){
-        if (Patterns.EMAIL_ADDRESS.matcher(email.value).matches()){
-            isEmailValid.value = true
-            errorEmail.value = ""
+        if (Patterns.EMAIL_ADDRESS.matcher(state.email).matches()){
+            isEmailValid = true
+            errorEmail = ""
         }else{
-            isEmailValid.value = false
-            errorEmail.value = "Email no valido"
+            isEmailValid = false
+            errorEmail = "Email no valido"
         }
 
         enableButton()
     }
 
     fun validatePassword(){
-        if (pass.value.length >= 6){
-            isPassValid.value = true
-            errorPass.value = ""
+        if (state.password.length >= 6){
+            isPassValid = true
+            errorPass = ""
         }else{
-            isPassValid.value = false
-            errorPass.value = "Minino 6 caracteres"
+            isPassValid = false
+            errorPass = "Minino 6 caracteres"
         }
 
         enableButton()
     }
 
     private fun enableButton(){
-        enableButton = isEmailValid.value && isPassValid.value
+        enableButton = isEmailValid && isPassValid
     }
 }

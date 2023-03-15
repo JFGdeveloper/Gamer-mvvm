@@ -15,6 +15,7 @@ import androidx.navigation.compose.rememberNavController
 import com.jfg.gamermvvm.presentation.screens.login.component.LoginBottomBar
 
 import com.jfg.gamermvvm.presentation.screens.login.component.LoginContent
+import com.jfg.gamermvvm.presentation.screens.login.component.OnLogin
 import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 
 @Composable
@@ -24,5 +25,7 @@ fun LoginScreen(controller: NavHostController) {
             content = { LoginContent(controller = controller,it) },
             bottomBar = { LoginBottomBar(controller) }
     )
+
+    OnLogin(controller = controller)
 }
 
