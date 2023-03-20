@@ -10,6 +10,8 @@ interface UsersRepository {
 
     suspend fun createUser(user: User): Response<Boolean>
 
+    suspend fun updateUser(user: User): Response<Boolean>
+
     // AL SER UN FLOW NO NECESITA SUSPEND
     fun getUserById(id: String): Flow<User>
 }

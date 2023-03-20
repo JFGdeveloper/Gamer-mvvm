@@ -1,7 +1,9 @@
-package com.jfg.gamermvvm.presentation.screens.profile_edit.components
+package com.jfg.gamermvvm.presentation.screens.profile_update.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
@@ -21,15 +23,15 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
-import com.jfg.gamermvvm.presentation.screens.profile_edit.ProfileEditViewModel
+import com.jfg.gamermvvm.presentation.screens.profile_update.ProfileUpdateViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.DarkGray500
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 
 @Composable
-fun ProfileEditContent(
+fun ProfileUpdateContent(
     paddingValues: PaddingValues,
-    vm: ProfileEditViewModel = hiltViewModel(),
+    vm: ProfileUpdateViewModel = hiltViewModel(),
 ) {
     val state = vm.state
 
@@ -85,23 +87,23 @@ fun ProfileEditContent(
                         leadingIcon = Icons.Default.Person,
                         keyBoard = KeyboardType.Text,
                         errorMsg = vm.errorUsername,
-                        onValidateText = {vm.onValidateUsername()}
+                        onValidateText = {}
                 )
 
 
                 DefaultButton(
-                        text = "Modificar",
+                        text = "Actualizar",
                         icon = Icons.Default.ArrowForward,
                         modifier = Modifier
                             .padding(top = 20.dp, bottom = 45.dp)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        onclick = {
+                            vm.onUpdateUser()
+                        }
 
-                ) {
-                }
-
+                )
 
             }
-
 
         }
 

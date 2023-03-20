@@ -2,11 +2,13 @@ package com.jfg.gamermvvm.presentation.navigation
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.navArgument
 import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
 import com.jfg.gamermvvm.presentation.screens.profile.ProfileScreen
-import com.jfg.gamermvvm.presentation.screens.profile_edit.ProfileEditScreen
+import com.jfg.gamermvvm.presentation.screens.profile_update.ProfileUpdateScreen
 import com.jfg.gamermvvm.presentation.screens.signup.SignupScreen
 
 @Composable
@@ -26,8 +28,15 @@ fun Navigation(controller: NavHostController) {
             ProfileScreen(controller)
         }
 
-        composable(AppScreen.ProfileEdit.route){
-            ProfileEditScreen(controller)
+        composable(AppScreen.ProfileUpdate.route,
+                   arguments = listOf(navArgument("user"){
+                       type = NavType.StringType
+                   })
+       ){
+            it.arguments?.getString("user")?.let {
+                ProfileUpdateScreen(controller, user = it)
+            }
+
         }
     }
 

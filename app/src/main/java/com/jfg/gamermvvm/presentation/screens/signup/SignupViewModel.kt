@@ -87,9 +87,10 @@ class SignupViewModel @Inject constructor(
 
     private fun signup(user: User) = viewModelScope.launch{
         response = Response.Loading
-        val result = authUseCases.signup(user)
+        val result: Response<FirebaseUser> = authUseCases.signup(user)
         response = result
     }
+
 
 
     fun onValidateUsername(){
