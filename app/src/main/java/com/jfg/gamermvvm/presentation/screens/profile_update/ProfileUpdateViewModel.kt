@@ -1,5 +1,6 @@
 package com.jfg.gamermvvm.presentation.screens.profile_update
 
+import android.content.Context
 import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -11,14 +12,19 @@ import androidx.lifecycle.viewModelScope
 import com.jfg.gamermvvm.domain.model.Response
 import com.jfg.gamermvvm.domain.model.User
 import com.jfg.gamermvvm.domain.use_cases.user.UserUseCases
+import com.jfg.gamermvvm.presentation.utils.ComposeFileProvider
+import com.jfg.gamermvvm.presentation.utils.ResultingActivityHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.launch
+import java.io.File
 import javax.inject.Inject
 
 @HiltViewModel
 class ProfileUpdateViewModel @Inject constructor(
     private val userUseCases: UserUseCases,
     private val savedStateHandle: SavedStateHandle,
+    @ApplicationContext private val context: Context
 ): ViewModel(){
 
     var state by mutableStateOf(ProfileUpdateState())
@@ -35,8 +41,11 @@ class ProfileUpdateViewModel @Inject constructor(
     var updateResponse by mutableStateOf<Response<Boolean>?>(null)
      private set
 
-    var imageUri by mutableStateOf<Uri?>(null) // LA USO PARA LA GALERIA
-    var hasImage by mutableStateOf(false) //LA USO PARA LA CAMRAR
+    var imageUri by mutableStateOf("") // LA USO PARA LA GALERIA
+
+    // OBJ DE LA CLASE UTILS
+    val resultingActivityHandler = ResultingActivityHandler()
+
 
 
 
@@ -44,14 +53,30 @@ class ProfileUpdateViewModel @Inject constructor(
         state = state.copy(username = user.username)
     }
 
-    // CAMBIA EL VALOR DE VARIABLE
-    fun onGalleryResult(uri: Uri?){
-        hasImage = uri != null
-        imageUri = uri
+    fun pickImage() = viewModelScope.launch {
+        val result = resultingActivityHandler.getContent("image/*")
+        imageUri = result.toString()
+        /*
+          if (result != null) {
+            file = ComposeFileProvider.createFileFromUri(context, result)
+            state = state.copy(image = result.toString())
+        }
+
+         */
+
     }
 
-    fun onCameraResult(result: Boolean){
-        hasImage = result
+    fun takePhoto() = viewModelScope.launch {
+        val result = resultingActivityHandler.takePicturePreview()
+        imageUri = ComposeFileProvider.getPathFromBitmap(context,result!!)
+        /*
+        if (result != null) {
+            state = state.copy(image = ComposeFileProvider.getPathFromBitmap(context, result))
+            file = File(state.image)
+        }
+
+         */
+
     }
 
     // Le paso el valor del textfield

@@ -43,23 +43,8 @@ fun ProfileUpdateContent(
     vm: ProfileUpdateViewModel = hiltViewModel(),
 ) {
     val state = vm.state
-    val context = LocalContext.current // CONTEXT PARA LA CAMARA DE FOTOS DEL DISPOSITIVO
+    vm.resultingActivityHandler.handle()
 
-    // obj para el control de la galeria
-    val imagePiker = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.GetContent(),
-            onResult = {  // comprobamos el null
-                it?.let {  vm.onGalleryResult(uri = it)  }
-            }
-    )
-
-    // OBJ PARA EL MANEJO DE LA CAMARA
-    val cameraLauncher = rememberLauncherForActivityResult(
-            contract = ActivityResultContracts.TakePicture(),
-            onResult = { hasImage ->  // comprobamos el null
-                vm.onCameraResult(hasImage)
-            }
-    )
 
     Box(
             modifier = Modifier
@@ -76,9 +61,10 @@ fun ProfileUpdateContent(
         ){
             Column(modifier = Modifier.padding(top = 20.dp)) {
 
-                if(vm.imageUri != null && vm.hasImage ){
+                if(vm.imageUri != "" ){
                     AsyncImage(
-                            modifier = Modifier.clip(CircleShape)
+                            modifier = Modifier
+                                .clip(CircleShape)
                                 .size(100.dp),
                             contentScale= ContentScale.Crop,
                             model = vm.imageUri,
@@ -90,12 +76,9 @@ fun ProfileUpdateContent(
                             modifier = Modifier
                                 .height(100.dp)
                                 .clickable {
-                                   // imagePiker.launch("image/*")
-
-                                    // USO LA CLASE QUE HE CREADO PARA ACCEDER A LA CAMARA
-                                   val uriPhone = ComposeFileProvider.getImageUri(context)
-                                    vm.imageUri = uriPhone
-                                    cameraLauncher.launch(uriPhone)
+                                    // imagePiker.launch("image/*")
+                                  //vm.pickImage()
+                                vm.takePhoto()
 
                                 },
                             painter = painterResource(id = R.drawable.user),
