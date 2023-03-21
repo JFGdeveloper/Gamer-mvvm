@@ -1,5 +1,6 @@
 package com.jfg.gamermvvm.presentation.screens.profile_update
 
+import android.net.Uri
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -34,10 +35,23 @@ class ProfileUpdateViewModel @Inject constructor(
     var updateResponse by mutableStateOf<Response<Boolean>?>(null)
      private set
 
+    var imageUri by mutableStateOf<Uri?>(null) // LA USO PARA LA GALERIA
+    var hasImage by mutableStateOf(false) //LA USO PARA LA CAMRAR
+
 
 
     init {
         state = state.copy(username = user.username)
+    }
+
+    // CAMBIA EL VALOR DE VARIABLE
+    fun onGalleryResult(uri: Uri?){
+        hasImage = uri != null
+        imageUri = uri
+    }
+
+    fun onCameraResult(result: Boolean){
+        hasImage = result
     }
 
     // Le paso el valor del textfield
