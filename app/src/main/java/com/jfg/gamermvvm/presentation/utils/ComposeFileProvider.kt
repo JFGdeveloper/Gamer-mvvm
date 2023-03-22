@@ -16,7 +16,7 @@ import java.util.*
 // INJECTO EL XML QUE HE CREADO
 class ComposeFileProvider:FileProvider(R.xml.file_paths) {
     companion object {
-        /*
+
         fun createFileFromUri(context: Context, uri: Uri): File? {
             return try {
                 val stream = context.contentResolver.openInputStream(uri)
@@ -25,7 +25,7 @@ class ComposeFileProvider:FileProvider(R.xml.file_paths) {
                         ".png",
                         context.cacheDir
                 )
-                FileUtils.copyInputStreamToFile(stream, file)
+                org.apache.commons.io.FileUtils.copyInputStreamToFile(stream,file)
                 return file
             } catch (e: Exception) {
                 e.printStackTrace()
@@ -33,7 +33,7 @@ class ComposeFileProvider:FileProvider(R.xml.file_paths) {
             }
         }
 
-         */
+
 
         fun getImageUri(context: Context): Uri {
 

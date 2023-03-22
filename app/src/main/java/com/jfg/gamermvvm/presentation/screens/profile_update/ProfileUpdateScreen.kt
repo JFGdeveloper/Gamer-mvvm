@@ -7,6 +7,7 @@ import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.navigation.AppScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultTopAppbar
 import com.jfg.gamermvvm.presentation.screens.profile_update.components.ProfileUpdateContent
+import com.jfg.gamermvvm.presentation.screens.profile_update.components.SaveImageValidate
 import com.jfg.gamermvvm.presentation.screens.profile_update.components.ValidateUpdate
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
@@ -24,5 +25,6 @@ fun ProfileUpdateScreen(controller: NavHostController, user: String) {
     )
 
     // LOGICA PARA NAVEGAR
+    SaveImageValidate()
     ValidateUpdate()
 }

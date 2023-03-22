@@ -41,10 +41,15 @@ class ProfileUpdateViewModel @Inject constructor(
     var updateResponse by mutableStateOf<Response<Boolean>?>(null)
      private set
 
+    var saveImageResponse by mutableStateOf<Response<String>?>(null)
+     private set
+
     var imageUri by mutableStateOf("") // LA USO PARA LA GALERIA
 
     // OBJ DE LA CLASE UTILS
     val resultingActivityHandler = ResultingActivityHandler()
+
+    var file: File? = null
 
 
 
@@ -55,7 +60,10 @@ class ProfileUpdateViewModel @Inject constructor(
 
     fun pickImage() = viewModelScope.launch {
         val result = resultingActivityHandler.getContent("image/*")
-        imageUri = result.toString()
+        if (result != null){
+            file = ComposeFileProvider.createFileFromUri(context, result)
+            imageUri = result.toString()
+        }
         /*
           if (result != null) {
             file = ComposeFileProvider.createFileFromUri(context, result)
@@ -68,11 +76,14 @@ class ProfileUpdateViewModel @Inject constructor(
 
     fun takePhoto() = viewModelScope.launch {
         val result = resultingActivityHandler.takePicturePreview()
-        imageUri = ComposeFileProvider.getPathFromBitmap(context,result!!)
+        if (result != null) {
+            imageUri = ComposeFileProvider.getPathFromBitmap(context,result)
+            file = File(imageUri) // llenamos el file con la foto de la camara
+        }
         /*
         if (result != null) {
             state = state.copy(image = ComposeFileProvider.getPathFromBitmap(context, result))
-            file = File(state.image)
+
         }
 
          */
@@ -80,11 +91,11 @@ class ProfileUpdateViewModel @Inject constructor(
     }
 
     // Le paso el valor del textfield
-    fun onUpdateUser(){
+    fun onUpdateUser(url: String){
         val myUser = User(
                 id = user.id,
                 username = state.username,
-                image = ""
+                image = url
         )
         updateUser(myUser)
         Log.d("javi","ONUPDATE OK 2")
@@ -102,6 +113,16 @@ class ProfileUpdateViewModel @Inject constructor(
 
     fun onUsernameInput(username: String){
         state = state.copy(username = username)
+    }
+
+
+    fun saveImage() = viewModelScope.launch {
+        if (file != null){
+            saveImageResponse = Response.Loading
+            val result = userUseCases.saveImage(file!!)
+            saveImageResponse = result
+        }
+
     }
 
 

@@ -70,6 +70,7 @@ dependencies {
 
     // DAGGER HILT
     implementation "com.google.dagger:hilt-android:2.44"
+    implementation 'com.google.firebase:firebase-storage-ktx:20.0.1'
     kapt "com.google.dagger:hilt-compiler:2.44"
 
     // HILT NAVIGATION COMPOSE
@@ -85,6 +86,8 @@ dependencies {
 
     //ASYNC COIL
     implementation "io.coil-kt:coil-compose:2.2.2"
+
+    implementation 'commons-io:commons-io:2.7'
 
 
     testImplementation 'junit:junit:4.13.2'

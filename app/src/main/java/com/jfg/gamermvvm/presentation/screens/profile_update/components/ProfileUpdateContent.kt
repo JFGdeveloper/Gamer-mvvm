@@ -31,6 +31,7 @@ import coil.compose.AsyncImage
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
+import com.jfg.gamermvvm.presentation.screens.Composables.DialogCapturePicture
 import com.jfg.gamermvvm.presentation.screens.profile_update.ProfileUpdateViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.DarkGray500
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
@@ -44,7 +45,13 @@ fun ProfileUpdateContent(
 ) {
     val state = vm.state
     vm.resultingActivityHandler.handle()
+    val stateDialog = remember { mutableStateOf(false) }
 
+    DialogCapturePicture(
+            state = stateDialog ,
+            takePhoto = { vm.takePhoto() },
+            pickerImage = { vm.pickImage()}
+    )
 
     Box(
             modifier = Modifier
@@ -65,7 +72,8 @@ fun ProfileUpdateContent(
                     AsyncImage(
                             modifier = Modifier
                                 .clip(CircleShape)
-                                .size(100.dp),
+                                .size(100.dp)
+                                .clickable { stateDialog.value = true },
                             contentScale= ContentScale.Crop,
                             model = vm.imageUri,
                             contentDescription = "imagen perfil"
@@ -77,9 +85,9 @@ fun ProfileUpdateContent(
                                 .height(100.dp)
                                 .clickable {
                                     // imagePiker.launch("image/*")
-                                  //vm.pickImage()
-                                vm.takePhoto()
-
+                                    //vm.pickImage()
+                                    //vm.takePhoto()
+                                   stateDialog.value = true
                                 },
                             painter = painterResource(id = R.drawable.user),
                             contentDescription = "control de xbox image"
@@ -129,7 +137,7 @@ fun ProfileUpdateContent(
                             .padding(top = 20.dp, bottom = 45.dp)
                             .fillMaxWidth(),
                         onclick = {
-                            vm.onUpdateUser()
+                            vm.saveImage()
                         }
 
                 )

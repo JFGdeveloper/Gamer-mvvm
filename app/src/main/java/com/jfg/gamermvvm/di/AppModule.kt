@@ -5,16 +5,15 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.storage.FirebaseStorage
+import com.google.firebase.storage.StorageReference
 import com.jfg.gamermvvm.core.Constants.USERS
 import com.jfg.gamermvvm.data.repository.AuthRepositoryImpl
 import com.jfg.gamermvvm.data.repository.UsersRepositoryImpl
 import com.jfg.gamermvvm.domain.repository.AuthRepository
 import com.jfg.gamermvvm.domain.repository.UsersRepository
 import com.jfg.gamermvvm.domain.use_cases.auth.*
-import com.jfg.gamermvvm.domain.use_cases.user.Create
-import com.jfg.gamermvvm.domain.use_cases.user.GetUserById
-import com.jfg.gamermvvm.domain.use_cases.user.Update
-import com.jfg.gamermvvm.domain.use_cases.user.UserUseCases
+import com.jfg.gamermvvm.domain.use_cases.user.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -26,6 +25,12 @@ object AppModule {
 
     @Provides
     fun providerFirebaseAuth():FirebaseAuth = FirebaseAuth.getInstance()
+
+    @Provides
+    fun provideFirebaseStorage():FirebaseStorage = FirebaseStorage.getInstance()
+
+    @Provides
+    fun provideStorageUserRef(storage: FirebaseStorage): StorageReference = storage.reference.child(USERS)
 
     @Provides
     fun providerAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
@@ -53,6 +58,7 @@ object AppModule {
     fun providerUserUseCases(repository: UsersRepository) = UserUseCases(
             create = Create(repository),
             getUserById = GetUserById(repository),
-            update = Update(repository)
+            update = Update(repository),
+            saveImage = SaveImage(repository)
     )
 }
