@@ -1,7 +1,9 @@
 package com.jfg.gamermvvm.presentation.screens.profile.components
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -9,6 +11,7 @@ import androidx.compose.material.icons.filled.Edit
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -17,10 +20,13 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import coil.compose.AsyncImage
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.navigation.AppScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.profile.ProfileViewModel
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 @Composable
 fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,vm: ProfileViewModel) {
@@ -45,10 +51,20 @@ fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,
                         fontWeight = FontWeight.Bold
                 )
                 Spacer(modifier = Modifier.height(50.dp))
-                Image(  modifier = Modifier.size(100.dp),
-                        painter = painterResource(id = R.drawable.user),
-                        contentDescription = null
-                )
+
+                if (vm.userData.image != ""){
+                    AsyncImage(model = vm.userData.image,
+                               contentDescription = "Imagen usuario",
+                               modifier= Modifier.size(120.dp).clip(CircleShape),
+                               contentScale = ContentScale.Crop
+                    )
+                }else{
+                    Image(  modifier = Modifier.size(120.dp),
+                            painter = painterResource(id = R.drawable.user),
+                            contentDescription = null
+                    )
+
+                }
 
             }
 
@@ -70,6 +86,10 @@ fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,
         Spacer(modifier = Modifier.height(12.dp))
 
         DefaultButton(text = "Editar datos", icon = Icons.Default.Edit, color = Color.White) {
+
+            // ASEGURO QUE LA URL DE LA FOTO NO SE CONFUNDE CON LA URL DE AL NAVEGACION DE COMPOSE
+            //vm.userData.image = URLEncoder.encode(vm.userData.image,StandardCharsets.UTF_8.toString())
+            Log.d("jf","valor de la image en profile editar datos image: ${vm.userData.image}")
             controller.navigate(AppScreen.ProfileUpdate.sendUser(vm.userData.toJson())){
                 popUpTo(AppScreen.ProfileUpdate.route){inclusive = true}
             }

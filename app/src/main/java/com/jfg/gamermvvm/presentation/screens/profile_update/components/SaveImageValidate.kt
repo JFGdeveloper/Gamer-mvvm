@@ -21,9 +21,6 @@ fun SaveImageValidate(vm: ProfileUpdateViewModel = hiltViewModel()) {
         is Response.Failure -> {
             Toast.makeText(LocalContext.current, response.exception?.message ?: "ERROR DESCONOCIDO", Toast.LENGTH_SHORT).show()
         }
-        else -> {
-            Toast.makeText(LocalContext.current, "Valor null", Toast.LENGTH_SHORT).show()
-
-        }
+        else -> {}
     }
 }

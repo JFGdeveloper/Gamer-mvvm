@@ -44,49 +44,41 @@ class ProfileUpdateViewModel @Inject constructor(
     var saveImageResponse by mutableStateOf<Response<String>?>(null)
      private set
 
-    var imageUri by mutableStateOf("") // LA USO PARA LA GALERIA
+
 
     // OBJ DE LA CLASE UTILS
     val resultingActivityHandler = ResultingActivityHandler()
 
-    var file: File? = null
+    private var file: File? = null
 
 
 
 
     init {
-        state = state.copy(username = user.username)
+        Log.d("jf","valor recivido de profile image: ${user.image}")
+        state = state.copy(username = user.username, image = user.image)
     }
 
     fun pickImage() = viewModelScope.launch {
         val result = resultingActivityHandler.getContent("image/*")
         if (result != null){
             file = ComposeFileProvider.createFileFromUri(context, result)
-            imageUri = result.toString()
-        }
-        /*
-          if (result != null) {
-            file = ComposeFileProvider.createFileFromUri(context, result)
+            Log.d("jf","valor de la imagen en pickImage() viewmodel: ${state.image}")
             state = state.copy(image = result.toString())
         }
 
-         */
 
     }
 
     fun takePhoto() = viewModelScope.launch {
         val result = resultingActivityHandler.takePicturePreview()
         if (result != null) {
-            imageUri = ComposeFileProvider.getPathFromBitmap(context,result)
-            file = File(imageUri) // llenamos el file con la foto de la camara
-        }
-        /*
-        if (result != null) {
             state = state.copy(image = ComposeFileProvider.getPathFromBitmap(context, result))
+            //state.image = ComposeFileProvider.getPathFromBitmap(context, result)
+            file = File(state.image)
+            Log.d("jf","valor de la imagen takephoto en viewmodel: ${state.image}")
 
         }
-
-         */
 
     }
 

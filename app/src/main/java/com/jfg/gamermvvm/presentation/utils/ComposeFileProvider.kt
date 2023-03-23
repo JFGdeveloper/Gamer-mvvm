@@ -44,7 +44,7 @@ class ComposeFileProvider:FileProvider(R.xml.file_paths) {
                     ".jpg",
                     directory
             )
-            val authority = context.packageName + ".file-provider"
+            val authority = context.packageName + ".fileprovider"
             return getUriForFile(
                     context,
                     authority,

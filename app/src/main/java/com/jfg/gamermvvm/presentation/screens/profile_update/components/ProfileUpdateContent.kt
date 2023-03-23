@@ -68,18 +68,22 @@ fun ProfileUpdateContent(
         ){
             Column(modifier = Modifier.padding(top = 20.dp)) {
 
-                if(vm.imageUri != "" ){
+                if(vm.state.image != "" ){
+                    Log.d("javi", "Profileupdatecontent image: ${vm.state.image}")
+
                     AsyncImage(
                             modifier = Modifier
                                 .clip(CircleShape)
                                 .size(100.dp)
                                 .clickable { stateDialog.value = true },
                             contentScale= ContentScale.Crop,
-                            model = vm.imageUri,
+                            model = vm.state.image,
                             contentDescription = "imagen perfil"
                     )
 
                 }else{
+                    Log.d("javi", "image: ${vm.state.image}")
+
                     Image(
                             modifier = Modifier
                                 .height(100.dp)
