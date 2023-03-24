@@ -22,11 +22,9 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.jfg.gamermvvm.R
-import com.jfg.gamermvvm.presentation.navigation.AppScreen
+import com.jfg.gamermvvm.presentation.navigation.AuthScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.profile.ProfileViewModel
-import java.net.URLEncoder
-import java.nio.charset.StandardCharsets
 
 @Composable
 fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,vm: ProfileViewModel) {
@@ -90,14 +88,14 @@ fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,
             // ASEGURO QUE LA URL DE LA FOTO NO SE CONFUNDE CON LA URL DE AL NAVEGACION DE COMPOSE
             //vm.userData.image = URLEncoder.encode(vm.userData.image,StandardCharsets.UTF_8.toString())
             Log.d("jf","valor de la image en profile editar datos image: ${vm.userData.image}")
-            controller.navigate(AppScreen.ProfileUpdate.sendUser(vm.userData.toJson())){
-                popUpTo(AppScreen.ProfileUpdate.route){inclusive = true}
+            controller.navigate(AuthScreen.ProfileUpdate.sendUser(vm.userData.toJson())){
+                popUpTo(AuthScreen.ProfileUpdate.route){inclusive = true}
             }
         }
         DefaultButton(text = "Cerrar sesion", icon = Icons.Default.Close) {
             vm.onLogout()
-            controller.navigate(AppScreen.Login.route){
-                popUpTo(AppScreen.Profile.route){
+            controller.navigate(AuthScreen.Login.route){
+                popUpTo(AuthScreen.Profile.route){
                     inclusive = true
                 }
             }

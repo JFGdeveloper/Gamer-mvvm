@@ -6,29 +6,29 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
-import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
+import com.jfg.gamermvvm.presentation.screens.home.HomeScreen
 import com.jfg.gamermvvm.presentation.screens.profile.ProfileScreen
 import com.jfg.gamermvvm.presentation.screens.profile_update.ProfileUpdateScreen
-import com.jfg.gamermvvm.presentation.screens.signup.SignupScreen
 
+
+// GRAPH PRINCIPAL
 @Composable
-fun Navigation(controller: NavHostController) {
+fun RootNavGraph(controller: NavHostController) {
 
-    NavHost(navController = controller, startDestination = AppScreen.Login.route){
+    NavHost(
+            navController = controller,
+            route = Graph.ROOT,
+            startDestination = Graph.AUTHENTICATION
+    ){
 
-        composable(AppScreen.Login.route){
-            LoginScreen(controller)
+        authNavGraph(controller)
+
+        composable(RootScreen.Home.route){
+           HomeScreen()
         }
 
-        composable(AppScreen.Signup.route){
-            SignupScreen(controller)
-        }
 
-        composable(AppScreen.Profile.route){
-            ProfileScreen(controller)
-        }
-
-        composable(AppScreen.ProfileUpdate.route,
+        composable(AuthScreen.ProfileUpdate.route,
                    arguments = listOf(navArgument("user"){
                        type = NavType.StringType
                    })
@@ -38,6 +38,7 @@ fun Navigation(controller: NavHostController) {
             }
 
         }
+
     }
 
 }

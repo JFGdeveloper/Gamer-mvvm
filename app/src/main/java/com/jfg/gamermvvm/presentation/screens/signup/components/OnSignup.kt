@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.domain.model.Response
-import com.jfg.gamermvvm.presentation.navigation.AppScreen
+import com.jfg.gamermvvm.presentation.navigation.AuthScreen
 
 @Composable
 fun OnSignup(controller: NavHostController, vm: SignupViewModel = hiltViewModel()) {
@@ -25,8 +25,8 @@ fun OnSignup(controller: NavHostController, vm: SignupViewModel = hiltViewModel(
         is Response.Success ->{
             LaunchedEffect(Unit){
                 vm.createUser()
-                controller.navigate(AppScreen.Profile.route){
-                    popUpTo(AppScreen.Signup.route){
+                controller.navigate(AuthScreen.Profile.route){
+                    popUpTo(AuthScreen.Signup.route){
                         inclusive = true
                     }
                 }

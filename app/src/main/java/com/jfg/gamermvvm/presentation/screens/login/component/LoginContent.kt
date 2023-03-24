@@ -1,7 +1,5 @@
 package com.jfg.gamermvvm.presentation.screens.login.component
 
-import android.widget.Toast
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -15,24 +13,18 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.R
-import com.jfg.gamermvvm.domain.model.Response
-import com.jfg.gamermvvm.presentation.navigation.AppScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
-import com.jfg.gamermvvm.presentation.screens.login.LoginScreen
 import com.jfg.gamermvvm.presentation.screens.login.LoginViewModel
 import com.jfg.gamermvvm.presentation.ui.theme.DarkGray500
-import com.jfg.gamermvvm.presentation.ui.theme.GamerMvvmTheme
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 
