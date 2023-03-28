@@ -1,10 +1,9 @@
 package com.jfg.gamermvvm.presentation.screens.new_post
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.util.Log
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.RadioButton
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
@@ -13,11 +12,15 @@ import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.List
 import androidx.compose.material.icons.filled.Lock
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Alignment.Companion.CenterHorizontally
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -25,32 +28,26 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.compose.rememberNavController
+import coil.compose.AsyncImage
 import com.jfg.gamermvvm.R
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultOutlineTextField
+import com.jfg.gamermvvm.presentation.screens.Composables.DialogCapturePicture
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
-data class CategotyRadioButton(
-    var category: String,
-    var image : Int
-)
+
 
 
 @Composable
-fun NewPostContent() {
+fun NewPostContent(vm: NewPostViewModel) {
 
-    val radioOptions = listOf(
-            CategotyRadioButton( "PC",R.drawable.icon_pc),
-            CategotyRadioButton("MOBIL",R.drawable.icon_pc),
-            CategotyRadioButton("XBOX",R.drawable.icon_xbox),
-            CategotyRadioButton("Nintendo",R.drawable.icon_nintendo),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4),
-            CategotyRadioButton("PS4",R.drawable.icon_ps4)
+    vm.resultingActivityHandler.handle()
+    val stateDialog = remember { mutableStateOf(false) }
+
+    DialogCapturePicture(
+            state = stateDialog ,
+            takePhoto = { vm.takePhoto() },
+            pickerImage = { vm.pickImage()}
     )
 
     Box(modifier = Modifier
@@ -73,19 +70,46 @@ fun NewPostContent() {
                 Column(
                         modifier = Modifier.fillMaxWidth(),
                         verticalArrangement = Arrangement.SpaceBetween,
-                        horizontalAlignment = Alignment.CenterHorizontally
+                        horizontalAlignment = CenterHorizontally
                 ) {
-                    Image(
-                            modifier = Modifier.height(120.dp),
-                            painter = painterResource(id = R.drawable.add_image),
-                            contentDescription = "Selecciona una imagen"
-                    )
-                    Text(
-                            text = "Selecciona una imagen",
-                            fontSize = 19.sp,
-                            fontWeight = FontWeight.Bold
 
-                    )
+                    if(vm.state.image != "" ){
+
+                        AsyncImage(
+                                modifier = Modifier
+                                    .fillMaxWidth()
+                                    .fillMaxHeight()
+                                    .clickable { stateDialog.value = true },
+                                contentScale= ContentScale.FillWidth,
+                                model = vm.state.image,
+                                contentDescription = "imagen perfil"
+                        )
+
+                    }else{
+
+                        Image(
+                                modifier = Modifier
+                                    .height(100.dp)
+                                    .clickable {
+                                        // imagePiker.launch("image/*")
+                                        //vm.pickImage()
+                                        //vm.takePhoto()
+                                        stateDialog.value = true
+                                    },
+                                painter = painterResource(id = R.drawable.add_image),
+                                contentDescription = "control de xbox image"
+                        )
+
+                        Text(
+                                text = "Selecciona una imagen",
+                                fontSize = 19.sp,
+                                fontWeight = FontWeight.Bold
+
+                        )
+
+                    }
+
+
                 }
 
             }
@@ -94,8 +118,8 @@ fun NewPostContent() {
                     modifier = Modifier
                         .padding(vertical = 8.dp, horizontal = 8.dp)
                         .fillMaxWidth(),
-                    value ="",
-                    onValueChange = {},
+                    value = vm.state.name,
+                    onValueChange = { vm.onNameInput(it)},
                     label = "Nombre del juego",
                     leadingIcon = Icons.Default.Face,
                     keyBoard = KeyboardType.Text,
@@ -107,8 +131,8 @@ fun NewPostContent() {
                     modifier= Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
-                    value = "",
-                    onValueChange = {},
+                    value = vm.state.description,
+                    onValueChange = { vm.onDescriptionInput(it)},
                     leadingIcon = Icons.Default.List,
                     hideText = true,
                     label = "Description",
@@ -126,15 +150,18 @@ fun NewPostContent() {
                     fontSize = 19.sp
             )
 
-            radioOptions.forEach{dataClass ->
+            vm.radioOptions.forEach{ it ->
                 Row(
                    verticalAlignment = CenterVertically
                 ) {
-                    RadioButton(selected = false, onClick = { /*TODO*/ })
+                    RadioButton(
+                            selected = it.category == vm.state.category,
+                            onClick = {vm.onCategoryInput(it.category) }
+                    )
                     Row(verticalAlignment = CenterVertically) {
-                        Text(text = dataClass.category, modifier = Modifier.width(100.dp))
+                        Text(text = it.category, modifier = Modifier.width(100.dp))
                         Image(
-                                painterResource(id = dataClass.image),
+                                painterResource(id = it.image),
                                 contentDescription = null,
                                 modifier = Modifier.height(40.dp)
                         )

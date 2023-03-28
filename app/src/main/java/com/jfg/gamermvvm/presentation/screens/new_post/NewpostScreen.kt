@@ -10,6 +10,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
@@ -17,13 +18,13 @@ import com.jfg.gamermvvm.presentation.screens.Composables.DefaultTopAppbar
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
-fun NewPostScreen(controller: NavHostController) {
+fun NewPostScreen(controller: NavHostController, viewModel: NewPostViewModel = hiltViewModel()) {
     Scaffold(
             topBar = {
                 DefaultTopAppbar(title = "Nuevo post", backAvailable = true, controller = controller)
             },
              content = {
-                 NewPostContent()
+                 NewPostContent(vm = viewModel)
              },
             bottomBar = {
                 DefaultButton(
@@ -31,7 +32,7 @@ fun NewPostScreen(controller: NavHostController) {
                         icon = Icons.Default.ArrowForward,
                         modifier = Modifier.fillMaxWidth()
                 ) {
-
+                    viewModel.onNewPost()
                 }
             }
     )
