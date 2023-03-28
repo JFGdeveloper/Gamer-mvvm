@@ -5,6 +5,7 @@ import androidx.navigation.compose.composable
 import com.jfg.gamermvvm.presentation.navigation.routes.AuthScreen
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
 import com.jfg.gamermvvm.presentation.navigation.routes.Graph
+import com.jfg.gamermvvm.presentation.screens.new_post.NewPostScreen
 import com.jfg.gamermvvm.presentation.screens.profile_update.ProfileUpdateScreen
 
 fun NavGraphBuilder.detailsNavGraph(controller: NavHostController){
@@ -13,6 +14,11 @@ fun NavGraphBuilder.detailsNavGraph(controller: NavHostController){
             route = Graph.DETAILS,
             startDestination = DetailScreen.ProfileUpdate.route
     ){
+
+        composable(DetailScreen.NewPost.route){
+            NewPostScreen(controller)
+        }
+
         composable(
                 DetailScreen.ProfileUpdate.route,
                 arguments = listOf(navArgument("user"){
