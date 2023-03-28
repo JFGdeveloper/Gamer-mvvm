@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import com.jfg.gamermvvm.presentation.navigation.AuthScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.AuthScreen
 
 @Composable
 fun LoginBottomBar(controller: NavController) {

@@ -16,9 +16,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.domain.model.Response
-import com.jfg.gamermvvm.presentation.navigation.AuthScreen
-import com.jfg.gamermvvm.presentation.navigation.Graph
-import com.jfg.gamermvvm.presentation.navigation.RootScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.Graph
+import com.jfg.gamermvvm.presentation.navigation.routes.RootScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.MyProgressBar
 import com.jfg.gamermvvm.presentation.screens.login.LoginViewModel
 
@@ -33,7 +32,7 @@ fun OnLogin(controller: NavHostController,vm: LoginViewModel = hiltViewModel()) 
         }
         is Response.Success -> {
             LaunchedEffect(Unit){
-                controller.navigate(RootScreen.Home.route){
+                controller.navigate(Graph.HOME){
                     popUpTo(Graph.AUTHENTICATION){
                         inclusive = true
                     }

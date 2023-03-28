@@ -6,8 +6,10 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.navArgument
+import com.jfg.gamermvvm.presentation.navigation.routes.AuthScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.Graph
+import com.jfg.gamermvvm.presentation.navigation.routes.RootScreen
 import com.jfg.gamermvvm.presentation.screens.home.HomeScreen
-import com.jfg.gamermvvm.presentation.screens.profile.ProfileScreen
 import com.jfg.gamermvvm.presentation.screens.profile_update.ProfileUpdateScreen
 
 
@@ -23,20 +25,8 @@ fun RootNavGraph(controller: NavHostController) {
 
         authNavGraph(controller)
 
-        composable(RootScreen.Home.route){
+        composable(Graph.HOME){
            HomeScreen()
-        }
-
-
-        composable(AuthScreen.ProfileUpdate.route,
-                   arguments = listOf(navArgument("user"){
-                       type = NavType.StringType
-                   })
-       ){
-            it.arguments?.getString("user")?.let {
-                ProfileUpdateScreen(controller, user = it)
-            }
-
         }
 
     }

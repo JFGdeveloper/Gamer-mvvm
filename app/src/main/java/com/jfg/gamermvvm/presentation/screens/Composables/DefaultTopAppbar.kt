@@ -7,22 +7,22 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import com.jfg.gamermvvm.presentation.navigation.AuthScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.AuthScreen
 import com.jfg.gamermvvm.presentation.ui.theme.Red500
 
 @Composable
 fun DefaultTopAppbar(
     title: String,
-    backAvailable: Boolean,
-    controller: NavController,
-    screen: AuthScreen
+    backAvailable: Boolean = false,
+    controller: NavController? = null,
+
 ) {
     TopAppBar (
       title = { Text(text = title, fontSize = 19.sp)},
       navigationIcon = {
           IconButton(onClick = {
               if (backAvailable){
-                  controller.navigate(screen.route)
+                 controller?.popBackStack()
               }
           }) {
               Icon(imageVector = Icons.Default.ArrowBack, contentDescription = null, tint = Color.White)

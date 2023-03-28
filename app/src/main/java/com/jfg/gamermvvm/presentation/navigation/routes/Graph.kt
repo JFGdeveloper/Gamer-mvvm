@@ -1,4 +1,4 @@
-package com.jfg.gamermvvm.presentation.navigation
+package com.jfg.gamermvvm.presentation.navigation.routes
 
 object Graph {
     const val ROOT = "root_graph"

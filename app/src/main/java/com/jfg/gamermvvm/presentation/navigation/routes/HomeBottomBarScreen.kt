@@ -1,4 +1,4 @@
-package com.jfg.gamermvvm.presentation.navigation
+package com.jfg.gamermvvm.presentation.navigation.routes
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.List

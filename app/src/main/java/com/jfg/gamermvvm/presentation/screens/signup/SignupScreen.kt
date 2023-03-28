@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import androidx.compose.material.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
-import com.jfg.gamermvvm.presentation.navigation.AuthScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.AuthScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultTopAppbar
 import com.jfg.gamermvvm.presentation.screens.signup.components.SignupContent
 
@@ -16,8 +16,7 @@ fun SignupScreen(controller: NavHostController) {
                 DefaultTopAppbar(
                         title = "Nuevo usuario",
                         controller = controller,
-                        backAvailable = true,
-                        screen = AuthScreen.Login
+                        backAvailable = true
                 )
             },
             content = {

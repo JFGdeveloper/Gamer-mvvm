@@ -1,5 +1,7 @@
 package com.jfg.gamermvvm.presentation.screens.profile.components
 
+import android.app.Activity
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
@@ -14,6 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -22,12 +25,19 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.jfg.gamermvvm.R
-import com.jfg.gamermvvm.presentation.navigation.AuthScreen
+import com.jfg.gamermvvm.presentation.MainActivity
+import com.jfg.gamermvvm.presentation.navigation.routes.AuthScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
+import com.jfg.gamermvvm.presentation.navigation.routes.Graph
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.profile.ProfileViewModel
 
 @Composable
 fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,vm: ProfileViewModel) {
+
+    // LA USARE PARA CUANDO CIERRO LOS GRAPH
+    val activity = LocalContext.current as? Activity
+
     Column(modifier = modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
         Box(){
             Image(  modifier = Modifier
@@ -86,19 +96,16 @@ fun ProfileContent(modifier: Modifier = Modifier, controller: NavHostController,
         DefaultButton(text = "Editar datos", icon = Icons.Default.Edit, color = Color.White) {
 
             // ASEGURO QUE LA URL DE LA FOTO NO SE CONFUNDE CON LA URL DE AL NAVEGACION DE COMPOSE
-            //vm.userData.image = URLEncoder.encode(vm.userData.image,StandardCharsets.UTF_8.toString())
-            Log.d("jf","valor de la image en profile editar datos image: ${vm.userData.image}")
-            controller.navigate(AuthScreen.ProfileUpdate.sendUser(vm.userData.toJson())){
-                popUpTo(AuthScreen.ProfileUpdate.route){inclusive = true}
+
+            controller.navigate(DetailScreen.ProfileUpdate.sendUser(vm.userData.toJson())){
+                popUpTo(DetailScreen.ProfileUpdate.route){inclusive = true}
             }
         }
         DefaultButton(text = "Cerrar sesion", icon = Icons.Default.Close) {
             vm.onLogout()
-            controller.navigate(AuthScreen.Login.route){
-                popUpTo(AuthScreen.Profile.route){
-                    inclusive = true
-                }
-            }
+           // PARA VOLVER AL GRAPH ROOT TENGO QUE CERRAR LA ACTIVITY Y INICIARLA
+            activity?.finish()
+            activity?.startActivity(Intent(activity,MainActivity::class.java))
         }
     }
 }
