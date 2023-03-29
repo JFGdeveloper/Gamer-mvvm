@@ -15,6 +15,7 @@ import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultButton
 import com.jfg.gamermvvm.presentation.screens.Composables.DefaultTopAppbar
+import com.jfg.gamermvvm.presentation.screens.new_post.components.OnValidateNewPost
 
 @SuppressLint("UnusedMaterialScaffoldPaddingParameter")
 @Composable
@@ -36,4 +37,6 @@ fun NewPostScreen(controller: NavHostController, viewModel: NewPostViewModel = h
                 }
             }
     )
+
+    OnValidateNewPost()
 }

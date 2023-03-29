@@ -8,6 +8,10 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jfg.gamermvvm.R
+import com.jfg.gamermvvm.domain.model.Post
+import com.jfg.gamermvvm.domain.model.Response
+import com.jfg.gamermvvm.domain.use_cases.auth.AuthUseCases
+import com.jfg.gamermvvm.domain.use_cases.posts.PostUseCases
 import com.jfg.gamermvvm.presentation.utils.ComposeFileProvider
 import com.jfg.gamermvvm.presentation.utils.ResultingActivityHandler
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -24,11 +28,20 @@ data class CategoryRadioButton(
 
 @HiltViewModel
 class NewPostViewModel @Inject constructor(
-    @ApplicationContext private val context: Context
+    @ApplicationContext private val context: Context,
+    private val postsUseCases: PostUseCases,
+    private val authUseCases: AuthUseCases,
 
-): ViewModel(){
+    ): ViewModel(){
 
     var state by mutableStateOf(State())
+
+    // RESPONSE
+    var createPostResponse by mutableStateOf<Response<Boolean>?>(null)
+        private set
+
+    //USER SESSION
+    val currentUser = authUseCases.getUser()
 
     val radioOptions = listOf(
             CategoryRadioButton("PC", R.drawable.icon_pc),
@@ -44,11 +57,30 @@ class NewPostViewModel @Inject constructor(
 
     private var file: File? = null
 
+    private fun createPost(post: Post) = viewModelScope.launch {
+        createPostResponse = Response.Loading
+        val result = postsUseCases.createPost(post, file!!)
+        createPostResponse = result
+    }
+
     fun onNewPost(){
-        Log.d("javi","name ${state.name}")
-        Log.d("javi","description ${state.description}")
-        Log.d("javi","category ${state.category}")
-        Log.d("javi","image ${state.image}")
+        val post = Post(
+                name = state.name,
+                description = state.description,
+                category = state.category,
+                idUser = currentUser?.uid ?: ""
+        )
+        createPost(post)
+    }
+
+    fun clearForm() {
+        state = state.copy(
+                name ="",
+                category = "",
+                description = "",
+                image = ""
+        )
+        createPostResponse = null
     }
 
     fun onNameInput(name: String){

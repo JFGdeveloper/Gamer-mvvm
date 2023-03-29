@@ -7,30 +7,31 @@ import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.jfg.gamermvvm.core.Constants.POSTS
 import com.jfg.gamermvvm.core.Constants.USERS
 import com.jfg.gamermvvm.data.repository.AuthRepositoryImpl
+import com.jfg.gamermvvm.data.repository.PostRepositoryImpl
 import com.jfg.gamermvvm.data.repository.UsersRepositoryImpl
 import com.jfg.gamermvvm.domain.repository.AuthRepository
+import com.jfg.gamermvvm.domain.repository.PostRepository
 import com.jfg.gamermvvm.domain.repository.UsersRepository
 import com.jfg.gamermvvm.domain.use_cases.auth.*
+import com.jfg.gamermvvm.domain.use_cases.posts.CreatePost
+import com.jfg.gamermvvm.domain.use_cases.posts.PostUseCases
 import com.jfg.gamermvvm.domain.use_cases.user.*
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import javax.inject.Named
 
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
 
+    //AUTH
     @Provides
     fun providerFirebaseAuth():FirebaseAuth = FirebaseAuth.getInstance()
-
-    @Provides
-    fun provideFirebaseStorage():FirebaseStorage = FirebaseStorage.getInstance()
-
-    @Provides
-    fun provideStorageUserRef(storage: FirebaseStorage): StorageReference = storage.reference.child(USERS)
 
     @Provides
     fun providerAuthRepository(impl: AuthRepositoryImpl): AuthRepository = impl
@@ -43,13 +44,38 @@ object AppModule {
                      signup = Signup(repository)
         )
 
+    //POST
+    @Provides
+    @Named(POSTS)
+    fun provideStoragePostsRef(storage: FirebaseStorage): StorageReference = storage.reference.child(POSTS)
 
-    //USER
+    @Provides
+    @Named(POSTS)
+    fun providePostsRef(db: FirebaseFirestore): CollectionReference = db.collection(POSTS)
+
+    @Provides
+    fun providePostsRepository(impl: PostRepositoryImpl): PostRepository = impl
+
+    @Provides
+    fun providePostsUseCases(repository: PostRepository) = PostUseCases(
+            createPost = CreatePost(repository)
+    )
+
+    //FIREBASE
     @Provides
     fun providerFirebase():FirebaseFirestore = Firebase.firestore
 
     @Provides
+    @Named(USERS)
     fun providerFirebaseRef(db: FirebaseFirestore): CollectionReference = db.collection(USERS)
+
+    @Provides
+    fun provideFirebaseStorage():FirebaseStorage = FirebaseStorage.getInstance()
+
+    //USER
+    @Provides
+    @Named(USERS)
+    fun provideStorageUserRef(storage: FirebaseStorage): StorageReference = storage.reference.child(USERS)
 
     @Provides
     fun providerUserImpl(impl: UsersRepositoryImpl):UsersRepository = impl

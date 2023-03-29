@@ -134,7 +134,6 @@ fun NewPostContent(vm: NewPostViewModel) {
                     value = vm.state.description,
                     onValueChange = { vm.onDescriptionInput(it)},
                     leadingIcon = Icons.Default.List,
-                    hideText = true,
                     label = "Description",
                     keyBoard = KeyboardType.Text,
                     errorMsg = "",
