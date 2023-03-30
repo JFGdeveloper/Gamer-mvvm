@@ -17,6 +17,7 @@ import com.jfg.gamermvvm.domain.repository.PostRepository
 import com.jfg.gamermvvm.domain.repository.UsersRepository
 import com.jfg.gamermvvm.domain.use_cases.auth.*
 import com.jfg.gamermvvm.domain.use_cases.posts.CreatePost
+import com.jfg.gamermvvm.domain.use_cases.posts.GetPosts
 import com.jfg.gamermvvm.domain.use_cases.posts.PostUseCases
 import com.jfg.gamermvvm.domain.use_cases.user.*
 import dagger.Module
@@ -58,7 +59,8 @@ object AppModule {
 
     @Provides
     fun providePostsUseCases(repository: PostRepository) = PostUseCases(
-            createPost = CreatePost(repository)
+            createPost = CreatePost(repository),
+            getPosts = GetPosts(repository)
     )
 
     //FIREBASE

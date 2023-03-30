@@ -7,6 +7,9 @@ import com.jfg.gamermvvm.core.Constants.POSTS
 import com.jfg.gamermvvm.domain.model.Post
 import com.jfg.gamermvvm.domain.model.Response
 import com.jfg.gamermvvm.domain.repository.PostRepository
+import kotlinx.coroutines.channels.awaitClose
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.callbackFlow
 import kotlinx.coroutines.tasks.await
 import java.io.File
 import javax.inject.Inject
@@ -32,6 +35,26 @@ class PostRepositoryImpl @Inject constructor(
             e.printStackTrace()
             Response.Failure(e)
         }
+    }
+
+    override fun getPost(): Flow<Response<List<Post>>> = callbackFlow{
+        val snapshotListener = postsRef.addSnapshotListener { snapshot, e ->
+
+            val postsResponse = if (snapshot != null) {
+                val posts = snapshot.toObjects(Post::class.java)
+
+                Response.Success(posts)
+            } else {
+                Response.Failure(e)
+            }
+            trySend(postsResponse)
+
+
+        }
+        awaitClose {
+            snapshotListener.remove()
+        }
+
     }
 
 
