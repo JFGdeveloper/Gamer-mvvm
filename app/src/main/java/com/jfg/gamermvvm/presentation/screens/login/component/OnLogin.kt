@@ -43,13 +43,7 @@ fun OnLogin(controller: NavHostController,vm: LoginViewModel = hiltViewModel()) 
             Toast.makeText(context, response.exception?.message ?: "Error al logearte", Toast.LENGTH_SHORT).show()
         }
 
-        else -> { Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.TopCenter){
-            Text(text = "Respuesta es null")
-            Spacer(modifier = Modifier.height(50.dp))
-            CircularProgressIndicator()
-        }
-
-        }
+        else -> {}
 
     }
 

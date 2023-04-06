@@ -20,7 +20,7 @@ fun PostsScreen(controller: NavHostController, vm: PostViewModel = hiltViewModel
 
     Scaffold(
             content = {
-                ValidatePost(viewModel = vm)
+                ValidatePost( controller = controller)
 
             }
     )
