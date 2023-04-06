@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
 import com.jfg.gamermvvm.presentation.screens.new_post.NewPostScreen
+import com.jfg.gamermvvm.presentation.screens.posts.components.ValidateMyPost
 
 @Composable
 fun MyPostsScreen(controller: NavHostController) {
@@ -24,7 +25,7 @@ fun MyPostsScreen(controller: NavHostController) {
                             .padding(it),
                         contentAlignment = Alignment.Center
                 ){
-                    Text(text = "Mis  Posts")
+                   ValidateMyPost(controller = controller)
                 }
 
             },
@@ -37,7 +38,7 @@ fun MyPostsScreen(controller: NavHostController) {
                     Icon(imageVector = Icons.Default.Add, contentDescription = null)
                 }
             },
-            floatingActionButtonPosition = FabPosition.Center,
+            floatingActionButtonPosition = FabPosition.End,
 
     )
 }

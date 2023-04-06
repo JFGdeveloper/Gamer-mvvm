@@ -22,7 +22,7 @@ import com.jfg.gamermvvm.domain.model.Post
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
 
 @Composable
-fun PostCard(controller: NavHostController, post: Post) {
+fun MyPostCard(controller: NavHostController, post: Post) {
     Card(
             modifier = Modifier.padding(4.dp)
                 .clickable {

@@ -7,17 +7,18 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.domain.model.Response
 import com.jfg.gamermvvm.presentation.screens.Composables.MyProgressBar
+import com.jfg.gamermvvm.presentation.screens.my_posts.MyPostViewModel
 import com.jfg.gamermvvm.presentation.screens.posts.PostViewModel
 
 @Composable
-fun ValidatePost(controller: NavHostController, viewModel: PostViewModel = hiltViewModel()) {
+fun ValidateMyPost(controller: NavHostController, viewModel: MyPostViewModel = hiltViewModel()) {
     when(val response = viewModel.response) {
 
         Response.Loading -> {
             MyProgressBar()
         }
         is Response.Success -> {
-            PostComponent(controller = controller, posts = response.data)
+            MyPostComponent(controller = controller, posts = response.data)
         }
         is Response.Failure -> {
             Toast.makeText(LocalContext.current, response.exception?.message ?: "Error desconido", Toast.LENGTH_LONG).show()

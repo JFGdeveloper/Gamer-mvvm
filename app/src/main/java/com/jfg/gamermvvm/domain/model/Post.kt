@@ -27,7 +27,7 @@ data class Post(
                             id = user?.id ?: "",
                             username = user?.username ?: "",
                             email = user?.email ?: "",
-                            image = if (user?.image != "") URLEncoder.encode(user?.image, StandardCharsets.UTF_8.toString())
+                            image = if (!user?.image.isNullOrBlank()) URLEncoder.encode(user?.image, StandardCharsets.UTF_8.toString())
                             else "",
                     ),
                     likes

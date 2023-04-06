@@ -1,6 +1,7 @@
 package com.jfg.gamermvvm.presentation.screens.posts.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -13,17 +14,18 @@ import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.domain.model.Post
 
 @Composable
-fun PostComponent(controller: NavHostController, posts: List<Post>) {
+fun MyPostComponent(controller: NavHostController, posts: List<Post>) {
 
     LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
+                .fillMaxHeight()
                 .padding(bottom = 55.dp),
             verticalArrangement = Arrangement.Top,
             horizontalAlignment = Alignment.CenterHorizontally
     ){
         items(posts){ post ->
-           PostCard(controller = controller, post = post)
+           MyPostCard(controller = controller, post = post)
         }
     }
 
