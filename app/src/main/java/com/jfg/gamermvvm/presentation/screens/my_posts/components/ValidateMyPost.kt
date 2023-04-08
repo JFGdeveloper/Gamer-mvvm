@@ -18,7 +18,7 @@ fun ValidateMyPost(controller: NavHostController, viewModel: MyPostViewModel = h
             MyProgressBar()
         }
         is Response.Success -> {
-            MyPostComponent(controller = controller, posts = response.data)
+            MyPostComponent(controller = controller, posts = response.data,viewModel)
         }
         is Response.Failure -> {
             Toast.makeText(LocalContext.current, response.exception?.message ?: "Error desconido", Toast.LENGTH_LONG).show()

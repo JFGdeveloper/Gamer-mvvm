@@ -2,13 +2,14 @@ package com.jfg.gamermvvm.presentation.screens.posts.components
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Card
+import androidx.compose.material.Icon
+import androidx.compose.material.IconButton
 import androidx.compose.material.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -20,13 +21,16 @@ import androidx.navigation.NavHostController
 import coil.compose.AsyncImage
 import com.jfg.gamermvvm.domain.model.Post
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
+import com.jfg.gamermvvm.presentation.screens.my_posts.MyPostViewModel
+import com.jfg.gamermvvm.presentation.screens.posts.PostViewModel
 
 @Composable
-fun MyPostCard(controller: NavHostController, post: Post) {
+fun MyPostCard(controller: NavHostController, post: Post,vm: MyPostViewModel) {
     Card(
-            modifier = Modifier.padding(4.dp)
+            modifier = Modifier
+                .padding(4.dp)
                 .clickable {
-                     controller.navigate(DetailScreen.DetailPost.sendPost(post = post.toJson()))
+                    controller.navigate(DetailScreen.DetailPost.sendPost(post = post.toJson()))
                 },
             border = BorderStroke(1.dp,Color.Blue),
             shape = RoundedCornerShape(8),
@@ -50,11 +54,7 @@ fun MyPostCard(controller: NavHostController, post: Post) {
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp),
                     fontWeight = FontWeight.Bold
             )
-            Text(
-                    text = post.user?.username ?: "nulo",
-                    fontSize = 13.sp,
-                    modifier = Modifier.padding(horizontal = 10.dp, vertical = 2.dp)
-            )
+
             Text(
                     text = post.description,
                     fontSize = 13.sp,
@@ -62,6 +62,15 @@ fun MyPostCard(controller: NavHostController, post: Post) {
                     maxLines = 2,
                     modifier = Modifier.padding(horizontal = 10.dp, vertical = 8.dp)
             )
+
+            IconButton(onClick = { vm.delete(post.id) }) {
+                Icon(
+                        imageVector = Icons.Default.Delete,
+                        contentDescription = null,
+                        tint = Color.White,
+                        modifier = Modifier.size(25.dp)
+                )
+            }
 
         }
 

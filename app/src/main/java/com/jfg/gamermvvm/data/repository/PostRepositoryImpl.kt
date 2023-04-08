@@ -45,6 +45,17 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun delete(idPost: String): Response<Boolean> {
+
+        return try {
+            postsRef.document(idPost).delete().await()
+            Response.Success(true)
+        }catch (e:Exception){
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
     override fun getPost(): Flow<Response<List<Post>>> = callbackFlow{
         val snapshotListener = postsRef.addSnapshotListener { snapshot, e ->
 

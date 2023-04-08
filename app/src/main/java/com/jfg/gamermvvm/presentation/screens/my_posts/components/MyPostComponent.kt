@@ -12,9 +12,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.domain.model.Post
+import com.jfg.gamermvvm.presentation.screens.my_posts.MyPostViewModel
+import com.jfg.gamermvvm.presentation.screens.posts.PostViewModel
 
 @Composable
-fun MyPostComponent(controller: NavHostController, posts: List<Post>) {
+fun MyPostComponent(controller: NavHostController, posts: List<Post>,vm: MyPostViewModel) {
 
     LazyColumn(
             modifier = Modifier
@@ -25,7 +27,7 @@ fun MyPostComponent(controller: NavHostController, posts: List<Post>) {
             horizontalAlignment = Alignment.CenterHorizontally
     ){
         items(posts){ post ->
-           MyPostCard(controller = controller, post = post)
+           MyPostCard(controller = controller, post = post,vm)
         }
     }
 
