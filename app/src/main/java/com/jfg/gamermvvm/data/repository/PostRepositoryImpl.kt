@@ -56,6 +56,43 @@ class PostRepositoryImpl @Inject constructor(
         }
     }
 
+    override suspend fun update(post: Post,file: File?): Response<Boolean> {
+        return try {
+
+            if (file != null){
+
+                // IMAGE
+                val fromFile = Uri.fromFile(file)
+                val ref = storagePostsRef.child(file.name)
+                val uploadTask = ref.putFile(fromFile).await()
+                val url = ref.downloadUrl.await()
+                post.image = url.toString()
+            }
+
+            val map = mapOf(
+                    "name" to post.name,
+                    "description" to post.description,
+                    "image" to post.image,
+                    "category" to post.category
+            )
+/*
+            val map: MutableMap<String, Any> = HashMap()
+            map["name"] = post.name
+            map["description"] = post.description
+            map["image"] = post.image
+            map["category"] = post.category
+
+ */
+            // DATA
+            postsRef.document(post.id).update(map).await() // add añade un id automaticamente
+            Response.Success(true)
+
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
     override fun getPost(): Flow<Response<List<Post>>> = callbackFlow{
         val snapshotListener = postsRef.addSnapshotListener { snapshot, e ->
 

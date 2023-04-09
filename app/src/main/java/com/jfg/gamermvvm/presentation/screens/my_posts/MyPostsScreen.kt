@@ -12,7 +12,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.jfg.gamermvvm.presentation.navigation.routes.DetailScreen
-import com.jfg.gamermvvm.presentation.screens.new_post.NewPostScreen
 import com.jfg.gamermvvm.presentation.screens.posts.components.ValidateMyPost
 
 @Composable

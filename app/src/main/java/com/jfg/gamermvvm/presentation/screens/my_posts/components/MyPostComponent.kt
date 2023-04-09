@@ -16,7 +16,7 @@ import com.jfg.gamermvvm.presentation.screens.my_posts.MyPostViewModel
 import com.jfg.gamermvvm.presentation.screens.posts.PostViewModel
 
 @Composable
-fun MyPostComponent(controller: NavHostController, posts: List<Post>,vm: MyPostViewModel) {
+fun MyPostComponent(controller: NavHostController, posts: List<Post>, vm: MyPostViewModel) {
 
     LazyColumn(
             modifier = Modifier

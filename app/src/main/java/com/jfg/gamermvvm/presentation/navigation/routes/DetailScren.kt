@@ -10,4 +10,8 @@ sealed class DetailScreen(val route: String){
     object DetailPost: DetailScreen("posts/detail/{post}"){
         fun sendPost(post:String)= "posts/detail/$post"
     }
+
+    object UpdatePost: DetailScreen("posts/update/{post}") {
+        fun sendPost(post: String) = "posts/update/$post"
+    }
 }
