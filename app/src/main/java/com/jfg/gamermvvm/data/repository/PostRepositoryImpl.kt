@@ -3,6 +3,7 @@ package com.jfg.gamermvvm.data.repository
 import android.net.Uri
 import android.util.Log
 import com.google.firebase.firestore.CollectionReference
+import com.google.firebase.firestore.FieldValue
 import com.google.firebase.storage.StorageReference
 import com.jfg.gamermvvm.core.Constants.POSTS
 import com.jfg.gamermvvm.core.Constants.USERS
@@ -75,14 +76,7 @@ class PostRepositoryImpl @Inject constructor(
                     "image" to post.image,
                     "category" to post.category
             )
-/*
-            val map: MutableMap<String, Any> = HashMap()
-            map["name"] = post.name
-            map["description"] = post.description
-            map["image"] = post.image
-            map["category"] = post.category
 
- */
             // DATA
             postsRef.document(post.id).update(map).await() // add añade un id automaticamente
             Response.Success(true)
@@ -92,6 +86,25 @@ class PostRepositoryImpl @Inject constructor(
             Response.Failure(e)
         }
     }
+
+    override suspend fun like(idPost: String, idUser: String): Response<Boolean> {
+        return try {
+            postsRef.document(idPost).update("likes", FieldValue.arrayUnion(idUser)).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }
+    }
+
+    override suspend fun deleteLike(idPost: String, idUser: String): Response<Boolean> {
+        return try {
+            postsRef.document(idPost).update("likes", FieldValue.arrayRemove(idUser)).await()
+            Response.Success(true)
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Response.Failure(e)
+        }    }
 
     override fun getPost(): Flow<Response<List<Post>>> = callbackFlow{
         val snapshotListener = postsRef.addSnapshotListener { snapshot, e ->

@@ -10,14 +10,14 @@ import com.jfg.gamermvvm.presentation.screens.Composables.MyProgressBar
 import com.jfg.gamermvvm.presentation.screens.posts.PostViewModel
 
 @Composable
-fun ValidatePost(controller: NavHostController, viewModel: PostViewModel = hiltViewModel()) {
+fun ValidateDeleteLike( viewModel: PostViewModel = hiltViewModel()) {
     when(val response = viewModel.response) {
 
         Response.Loading -> {
             MyProgressBar()
         }
         is Response.Success -> {
-            PostComponent(controller = controller, posts = response.data, vm = viewModel)
+
         }
         is Response.Failure -> {
             Toast.makeText(LocalContext.current, response.exception?.message ?: "Error desconido", Toast.LENGTH_LONG).show()

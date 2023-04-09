@@ -61,7 +61,9 @@ object AppModule {
             getPosts = GetPosts(repository),
             getPostsByUserId = GetPostsByUserId(repository),
             deletePost = DeletePost(repository),
-            updatePost = UpdatePost(repository)
+            updatePost = UpdatePost(repository),
+            like = Like(repository),
+            deleteLike = DeleteLike(repository)
     )
 
     //FIREBASE
